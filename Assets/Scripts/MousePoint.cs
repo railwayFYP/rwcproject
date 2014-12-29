@@ -4,6 +4,7 @@ using System.Collections;
 public class MousePoint : MonoBehaviour 
 {
 	RaycastHit hit;
+
 	public string currentItemSelected;
   
 	public bool currentlyBuilding;
@@ -109,6 +110,7 @@ public class MousePoint : MonoBehaviour
     bool checkWithinBounds(float mouseX, float mouseY)
     {
         // NCA: Check within screen
+        // mouse x - 200 cause of the UIs
         if (mouseX < 0 || mouseX > Screen.width - 200 || mouseY < 0 || mouseY > Screen.height)
         {
             return false;
@@ -127,6 +129,7 @@ public class MousePoint : MonoBehaviour
        
     }
 
+    //----- FUNCTIONS FOR BUTTON PRESSED ON GUI -----
     public void DownUpPressed()
     {
         if (currentItemSelected != "Straight Track")
@@ -187,4 +190,14 @@ public class MousePoint : MonoBehaviour
         currentlyBuilding = true;
     }
 
+    public void SteamTrainPressed()
+    {
+        if (currentItemSelected != "SteamTrain")
+        {
+            hidePrevious();
+        }
+        currentItemSelected = "SteamTrain";
+        currentlyBuilding = true;
+    }
+    //----- END FUNCTIONS FOR BUTTON PRESSED ON GUI -----
 }

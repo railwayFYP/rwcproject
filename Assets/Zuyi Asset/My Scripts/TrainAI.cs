@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+// Written by NCA
+
 // EASY AI SPEED
 // MOVE 0.1
 // TURN 1.15
@@ -19,77 +21,82 @@ using System.Collections;
 // NCA: Train Basic AI
 public class TrainAI : MonoBehaviour {
     // Debug use 
-    public bool reset = false;
+    public bool         reset = false;
 
     // Constant For Tracks
-    const int INVALID = 0;
-    const int VALID = 1;
-    const int OUT = 2;
+    const int           INVALID = 0;
+    const int           VALID   = 1;
+    const int           OUT     = 2;
 
     // Constant Direction for the train movement
-    const int UP = 1;
-    const int RIGHT = 2;
-    const int DOWN = 3;
-    const int LEFT = 4;
+    const int           UP      = 1;
+    const int           RIGHT   = 2;
+    const int           DOWN    = 3;
+    const int           LEFT    = 4;
 
     // Const angle for the train to Steer toward
-    const float STEERUP = 0;
-    const float STEERLEFT = 270;
-    const float STEERRIGHT = 90;
-    const float STEERDOWN = 180;
+    const float         STEERUP     = 0;
+    const float         STEERLEFT   = 270;
+    const float         STEERRIGHT  = 90;
+    const float         STEERDOWN   = 180;
 
     // Bool for the train to move
-    public bool m_bMove = false;
+    public bool         m_bMove     = false;
 
     // Bool for the train to trigger the snapping when steering
-    public bool m_bSnap = true;
-    public float m_fSnapStrength = 5;
+    public bool         m_bSnap         = true;
+    public float        m_fSnapStrength = 5;
 
     // Bool for the train to check for next track / If it is still on a track.
-    public bool m_bNextTrack = true;
-    public int m_nTrackData = INVALID;
+    public bool         m_bNextTrack = true;
+    public int          m_nTrackData = INVALID;
 
     // Train Steering and movement speed
-    public float m_fMovespeed = 0.1f;
-    public float m_fTurnspeed = 2.0f;
+    public float        m_fMovespeed = 0.1f;
+    public float        m_fTurnspeed = 2.0f;
+
+    // Beta Feature
+    // False will make it minus from rotation and True will make it increase from rotation
+    public bool         m_bTurnFactor = false;
 
     // Grid data that store the x and y of the grid the train is on
-    public int m_nCurrentGridX = 0;
-    public int m_nCurrentGridY = 0;
+    public int          m_nCurrentGridX = 0;
+    public int          m_nCurrentGridY = 0;
 
     // Grid data that store the x and y of the next grid the train should move on
-    public int m_nNextGridX = 0;
-    public int m_nNextGridY = 0;
+    public int          m_nNextGridX = 0;
+    public int          m_nNextGridY = 0;
 
     // Int that store the direction of the next movement for the train
-    public int m_nNextMove = 0;
+    public int          m_nNextMove = 0;
 
     // Vector that store the position to move to
-    private Vector3 m_vNextPos;
+    private Vector3     m_vNextPos;
 
     // Vector that store the current rotation of the train.
     // Reason: Using the Transform rotation.eulerangle will not give a correct value
-    private Vector3 m_vRotation;
+    private Vector3     m_vRotation;
 
     // Train own's animator
-    private Animator m_anim;
+    private Animator    m_anim;
 
     // Grid GameObject
-    public GameObject rGrid;
+    public GameObject   rGrid;
 
 	// Use this for initialization
-	void Start () 
+	void            Start () 
     {
 	    m_anim = GetComponent<Animator>();  
  
-        this.transform.position = new Vector3(0,8.75f,-2.5f);
+        //this.transform.position = new Vector3(0,8.75f,-2.5f);
 
         m_vRotation = new Vector3(0, 0, 0);
         
+        rGrid = GameObject.Find("Grid");
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void            Update () {
         if (reset)
         {
             // Move train to Grid 0, 0
@@ -107,6 +114,8 @@ public class TrainAI : MonoBehaviour {
 
             m_bNextTrack = true;
             m_nTrackData = INVALID;
+
+            m_nNextMove = UP;
 
             reset = false;
         }
@@ -145,7 +154,7 @@ public class TrainAI : MonoBehaviour {
 	}
 
     // Controls the rotation of the train
-    public void steer()
+    void            steer()
     {
         float facing = m_vRotation.y;
 
@@ -154,15 +163,15 @@ public class TrainAI : MonoBehaviour {
             case UP:
                 {
                     if (facing != STEERUP)
-                    { 
-                        if (facing <= 90)
+                    {
+                        if (!m_bTurnFactor)
                         {
                             this.transform.Rotate(new Vector3(0, -m_fTurnspeed, 0));
                             m_vRotation.y -= m_fTurnspeed;
 
                             //Debug.Log("Rotating Left");
                         }
-                        else if (facing >= 270)
+                        else
                         {
                             this.transform.Rotate(new Vector3(0, m_fTurnspeed, 0));
                             m_vRotation.y += m_fTurnspeed;
@@ -175,13 +184,13 @@ public class TrainAI : MonoBehaviour {
                 {
                     if (facing != STEERDOWN)
                     {
-                        if (facing > 180)
+                        if (!m_bTurnFactor)
                         {
                             this.transform.Rotate(new Vector3(0, -m_fTurnspeed, 0));
                             m_vRotation.y -= m_fTurnspeed;
                             //Debug.Log("Rotating Left");
                         }
-                        else if (facing < 180)
+                        else
                         {
                             this.transform.Rotate(new Vector3(0, m_fTurnspeed, 0));
                             m_vRotation.y += m_fTurnspeed;
@@ -194,18 +203,13 @@ public class TrainAI : MonoBehaviour {
                 {
                     if (facing != STEERLEFT)
                     {
-                        if (facing == 0)
-                        {
-                            m_vRotation.y = 360;
-                            //Debug.Log("Set to 360");
-                        }
-                        if (facing > 270)
+                        if (!m_bTurnFactor)
                         {
                             this.transform.Rotate(new Vector3(0, -m_fTurnspeed, 0));
                             m_vRotation.y -= m_fTurnspeed;
-                           // Debug.Log("Rotating Left");
+                            // Debug.Log("Rotating Left");
                         }
-                        else if (facing < 270)
+                        else
                         {
                             this.transform.Rotate(new Vector3(0, m_fTurnspeed, 0));
                             m_vRotation.y += m_fTurnspeed;
@@ -218,13 +222,13 @@ public class TrainAI : MonoBehaviour {
                 {
                     if (facing != STEERRIGHT)
                     {
-                        if (facing > 90)
+                        if (!m_bTurnFactor)
                         {
                             this.transform.Rotate(new Vector3(0, -m_fTurnspeed, 0));
                             m_vRotation.y -= m_fTurnspeed;
                             //Debug.Log("Rotating Left");
                         }
-                        else if (facing < 90)
+                        else
                         {
                             this.transform.Rotate(new Vector3(0, m_fTurnspeed, 0));
                             m_vRotation.y += m_fTurnspeed;
@@ -237,8 +241,8 @@ public class TrainAI : MonoBehaviour {
         }
 
         if (m_bSnap)
-        { 
-            switch(m_nNextMove)
+        {
+            switch (m_nNextMove)
             {
                 case UP:
                     {
@@ -302,7 +306,7 @@ public class TrainAI : MonoBehaviour {
     }
 
     // Check if train is within the track grid
-    public bool withinGrid()
+    bool            withinGrid()
     {
         int left    = (m_nCurrentGridX * 10) - 5;
         int right   = (m_nCurrentGridX * 10) + 5;
@@ -318,10 +322,10 @@ public class TrainAI : MonoBehaviour {
         return false;
     }
 
-    public int getTrack()
+    // Check if there is track ahead of the train
+    // Returns VALID,INVALID,OUT in int
+    int             getTrack()
     {
-        float facing = this.transform.rotation.eulerAngles.y;
-
         foreach (Transform child in rGrid.transform)
         {
             if (child.GetComponent<GridData>().posX == m_nCurrentGridX && child.GetComponent<GridData>().posY == m_nCurrentGridY)
@@ -333,13 +337,13 @@ public class TrainAI : MonoBehaviour {
                     // |
                     // v
                     // Vertical track therefore 2 ways Up or Down
-                    if (facing < 90 || facing > 270)
+                    if (m_nNextMove == UP)
                     {
-                        // Steer UP
+                        // Steer UP         
                         m_nNextMove = UP;
                         return VALID;
                     }
-                    else if(facing > 160 && facing < 200)
+                    else if (m_nNextMove == DOWN)
                     {
                         // Steer DOWN
                         m_nNextMove = DOWN;
@@ -348,17 +352,17 @@ public class TrainAI : MonoBehaviour {
                     Debug.Log("DownUp is invalid");
                     return INVALID;
                 }
-                else if (child.tag == "LeftRight") 
+                else if (child.tag == "LeftRight")
                 {
                     // < ---------- >
                     // Horizontal Track
-                    if (facing > 250 && facing < 280)
+                    if (m_nNextMove == LEFT)
                     {
                         // Steer Left
                         m_nNextMove = LEFT;
                         return VALID;
                     }
-                    else if (facing > 70 && facing < 120)
+                    else if (m_nNextMove == RIGHT)
                     {
                         // Steer Right
                         m_nNextMove = RIGHT;
@@ -367,41 +371,45 @@ public class TrainAI : MonoBehaviour {
                     Debug.Log("LeftRight is invalid");
                     return INVALID;
                 }
-                else if (child.tag == "UpRight") 
+                else if (child.tag == "UpRight")
                 {
                     // ^
                     // |
                     // - - >
-                    if (facing > 135 && facing < 225)
+                    if (m_nNextMove == DOWN)
                     {
                         // Going downward so steer right
                         m_nNextMove = RIGHT;
+                        m_bTurnFactor = false;
                         return VALID;
                     }
-                    else if (facing > 225 && facing < 360)
+                    else if (m_nNextMove == LEFT)
                     {
                         // Facing Left so steer Up
                         m_nNextMove = UP;
+                        m_bTurnFactor = true;
                         return VALID;
                     }
                     Debug.Log("UpRight is invalid");
                     return INVALID;
                 }
-                else if (child.tag == "UpLeft") 
+                else if (child.tag == "UpLeft")
                 {
                     //     ^
                     //     |
                     //  <- - 
-                    if (facing > 135 && facing < 225)
+                    if (m_nNextMove == DOWN)
                     {
                         // Going downward so steer Left
                         m_nNextMove = LEFT;
+                        m_bTurnFactor = true;
                         return VALID;
                     }
-                    else if (facing > 0 && facing < 225)
+                    else if (m_nNextMove == RIGHT)
                     {
                         // Facing Right so steer Up
                         m_nNextMove = UP;
+                        m_bTurnFactor = false;
                         return VALID;
                     }
                     Debug.Log("UpLeft is Invalid");
@@ -412,16 +420,18 @@ public class TrainAI : MonoBehaviour {
                     // - - >
                     // |
                     // v
-                    if (facing > 225 && facing < 330)
+                    if (m_nNextMove == LEFT)
                     {
                         // Facing Left so steer Down
                         m_nNextMove = DOWN;
+                        m_bTurnFactor = false;
                         return VALID;
                     }
-                    else if (facing == 0 || facing > 270)
+                    else if (m_nNextMove == UP)
                     {
                         // Facing up so steer right
                         m_nNextMove = RIGHT;
+                        m_bTurnFactor = true;
                         return VALID;
                     }
                     Debug.Log("DownRight is invalid");
@@ -432,16 +442,18 @@ public class TrainAI : MonoBehaviour {
                     // <- - 
                     //    |
                     //    v
-                    if (facing > 0 && facing < 225)
+                    if (m_nNextMove == RIGHT)
                     {
                         // Facing Right so steer Down
                         m_nNextMove = DOWN;
+                        m_bTurnFactor = true;
                         return VALID;
                     }
-                    else if (facing == 0)
+                    else if (m_nNextMove == UP)
                     {
                         // Facing up so steer Left
                         m_nNextMove = LEFT;
+                        m_bTurnFactor = false;
                         return VALID;
                     }
                     Debug.Log("DownLeft is invalid");
@@ -452,8 +464,8 @@ public class TrainAI : MonoBehaviour {
         return INVALID;
     }
 
-    // Get the grid pos for next move
-    public bool getGridPos()
+    // Set the grid based on the train heading
+    bool            getGridPos()
     {
         switch (m_nNextMove)
         {
@@ -487,14 +499,27 @@ public class TrainAI : MonoBehaviour {
         return false;
     }
 
+    // Set Train Position
+    public void     setTrainPos(int _gridX, int _gridY)
+    {
+        this.transform.position = new Vector3(_gridX * 10, 8.75f, (_gridY * 10) - 2.5f);
+    }
+
+    // Set the train facing based on an angle given
+    public void     setOrientation(float _angle)
+    {
+        m_vRotation = new Vector3(0, _angle, 0);
+        this.transform.Rotate(new Vector3(0, _angle, 0));
+    }
+
     // Button Press
-    public void moveTrain()
+    public void     moveTrain()
     {
         m_bMove = !m_bMove;
     }
 
     // Button Press
-    public void resetTrain()
+    public void     resetTrain()
     {
         reset = true;
     }
