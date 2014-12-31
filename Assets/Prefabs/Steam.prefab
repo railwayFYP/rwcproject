@@ -83,7 +83,7 @@ GameObject:
   - 54: {fileID: 5436140}
   - 65: {fileID: 6536140}
   m_Layer: 0
-  m_Name: Steam Train
+  m_Name: Steam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -372,10 +372,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   reset: 0
+  facing: 0
   m_bMove: 0
   m_bSnap: 0
   m_fSnapStrength: 1
   m_bNextTrack: 1
+  m_bStopOnTrack: 0
   m_nTrackData: 0
   m_fMovespeed: .100000001
   m_fTurnspeed: 1.14999998

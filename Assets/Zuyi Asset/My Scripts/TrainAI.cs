@@ -18,11 +18,18 @@ using System.Collections;
 // TURN 3.3
 // SNAP 15
 
+public enum TrainType
+{
+    Steam,
+    Diesel,
+    Electric
+};
+
 // NCA: Train Basic AI
 public class TrainAI : MonoBehaviour {
     // Debug use 
     public bool         reset = false;
-
+    public float        facing;
     // Constant For Tracks
     const int           INVALID = 0;
     const int           VALID   = 1;
@@ -49,6 +56,7 @@ public class TrainAI : MonoBehaviour {
 
     // Bool for the train to check for next track / If it is still on a track.
     public bool         m_bNextTrack = true;
+    public bool         m_bStopOnTrack = false;
     public int          m_nTrackData = INVALID;
 
     // Train Steering and movement speed
@@ -119,6 +127,7 @@ public class TrainAI : MonoBehaviour {
 
             reset = false;
         }
+
         if (m_bMove)
         {
             if (m_nTrackData == VALID && !m_bNextTrack)
@@ -126,10 +135,25 @@ public class TrainAI : MonoBehaviour {
                 steer(); // Steers the train (controls the rotation)
                 this.transform.Translate(0, 0, m_fMovespeed); // Move the train forward according to it rotation (Direction)
 
+                // check next grid if it is a valid track
+                if (checkAhead())
+                {
+                    // Check if it destination and if there is a track
+                    if (checkTrack() == INVALID)
+                    {
+                        Debug.Log("Invalid Track Train Stopping");
+                        m_bMove = false;
+                    }
+                    else if (checkTrack() == OUT)
+                    {
+                        Debug.Log("No Track Train Stopping");
+                        m_bMove = false;
+                    }
+                }
+
                 // moved out of current grid
                 if (!withinGrid())
-                {
-                    getGridPos();
+                {  
                     m_bNextTrack = true;
                     m_nCurrentGridX = m_nNextGridX;
                     m_nCurrentGridY = m_nNextGridY;
@@ -139,6 +163,7 @@ public class TrainAI : MonoBehaviour {
             else
             {
                 m_nTrackData = getTrack();
+                getGridPos();
                 m_bNextTrack = false;
                 m_bSnap = true;
             }
@@ -149,14 +174,17 @@ public class TrainAI : MonoBehaviour {
         {
             m_anim.Play("Idle");
         }
-        //m_anim.Play("Moving");
-        //m_anim.Play("Idle");
 	}
 
     // Controls the rotation of the train
     void            steer()
     {
-        float facing = m_vRotation.y;
+        facing = m_vRotation.y;
+
+        if (facing < 0)
+        {
+            facing = 360 + facing;
+        }
 
         switch (m_nNextMove)
         {
@@ -203,6 +231,7 @@ public class TrainAI : MonoBehaviour {
                 {
                     if (facing != STEERLEFT)
                     {
+                        //Debug.Log(facing);
                         if (!m_bTurnFactor)
                         {
                             this.transform.Rotate(new Vector3(0, -m_fTurnspeed, 0));
@@ -276,6 +305,7 @@ public class TrainAI : MonoBehaviour {
                     {
                         if (facing != STEERLEFT)
                         {
+                            //Debug.Log(Mathf.Abs(facing) - STEERLEFT);
                             if (Mathf.Abs(facing - STEERLEFT) < m_fSnapStrength)
                             {
                                 this.transform.rotation = Quaternion.Euler(new Vector3(0, STEERLEFT, 0));
@@ -305,6 +335,24 @@ public class TrainAI : MonoBehaviour {
         }
     }
 
+
+    // Check if train is within the checkAhead grid
+    bool            checkAhead()
+    {
+        int left = (m_nCurrentGridX * 10) - 2;
+        int right = (m_nCurrentGridX * 10) + 2;
+        int up = (m_nCurrentGridY * 10) + 2;
+        int down = (m_nCurrentGridY * 10) - 2;
+
+        Vector3 trainPos = this.transform.position;
+
+        if (trainPos.x > left && trainPos.x < right && trainPos.z < up && trainPos.z > down)
+        {
+            return true;
+        }
+        return false;
+    }
+
     // Check if train is within the track grid
     bool            withinGrid()
     {
@@ -323,142 +371,273 @@ public class TrainAI : MonoBehaviour {
     }
 
     // Check if there is track ahead of the train
+    // NCA: IMPORTANT : Currently the next grid is not update so its hard to check next grid, need rearrange the logic here
+    int             checkTrack()
+    {
+        foreach (Transform child in rGrid.transform)
+        {
+            GridData gData = child.GetComponent<GridData>();
+            if (gData.posX == m_nNextGridX && gData.posY == m_nNextGridY)
+            {
+                if (gData.isTrack)
+                {
+                    if (gData.TrackType == Track.Vertical)
+                    {
+                        // ^
+                        // |
+                        // |
+                        // v
+                        // Vertical track therefore 2 ways Up or Down
+                        if (m_nNextMove == UP)
+                        {
+                            // Steer UP         
+                            return VALID;
+                        }
+                        else if (m_nNextMove == DOWN)
+                        {
+                            // Steer DOWN
+                            return VALID;
+                        }
+                        //Debug.Log("DownUp is invalid");
+                        return INVALID;
+                    }
+                    else if (gData.TrackType == Track.Horizontal)
+                    {
+                        // < ---------- >
+                        // Horizontal Track
+                        if (m_nNextMove == LEFT)
+                        {
+                            // Steer Left
+                            return VALID;
+                        }
+                        else if (m_nNextMove == RIGHT)
+                        {
+                            // Steer Right
+                            return VALID;
+                        }
+                        //Debug.Log("LeftRight is invalid");
+                        return INVALID;
+                    }
+                    else if (gData.TrackType == Track.UpRight)
+                    {
+                        // ^
+                        // |
+                        // - - >
+                        if (m_nNextMove == DOWN)
+                        {
+                            // Going downward so steer right
+                            return VALID;
+                        }
+                        else if (m_nNextMove == LEFT)
+                        {
+                            // Facing Left so steer Up
+                            return VALID;
+                        }
+                        //Debug.Log("UpRight is invalid");
+                        return INVALID;
+                    }
+                    else if (gData.TrackType == Track.UpLeft)
+                    {
+                        //     ^
+                        //     |
+                        //  <- - 
+                        if (m_nNextMove == DOWN)
+                        {
+                            // Going downward so steer Left
+                            return VALID;
+                        }
+                        else if (m_nNextMove == RIGHT)
+                        {
+                            // Facing Right so steer Up
+                            return VALID;
+                        }
+                        //Debug.Log("UpLeft is Invalid");
+                        return INVALID;
+                    }
+                    else if (gData.TrackType == Track.DownRight)
+                    {
+                        // - - >
+                        // |
+                        // v
+                        if (m_nNextMove == LEFT)
+                        {
+                            // Facing Left so steer Down
+                            return VALID;
+                        }
+                        else if (m_nNextMove == UP)
+                        {
+                            // Facing up so steer right
+                            return VALID;
+                        }
+                        //Debug.Log("DownRight is invalid");
+                        return INVALID;
+                    }
+                    else if (gData.TrackType == Track.DownLeft)
+                    {
+                        // <- - 
+                        //    |
+                        //    v
+                        if (m_nNextMove == RIGHT)
+                        {
+                            // Facing Right so steer Down
+                            return VALID;
+                        }
+                        else if (m_nNextMove == UP)
+                        {
+                            // Facing up so steer Left
+                            return VALID;
+                        }
+                        //Debug.Log("DownLeft is invalid");
+                        return INVALID;
+                    }
+                }
+                return OUT;
+            }
+        }
+        return OUT;
+    }
+
     // Returns VALID,INVALID,OUT in int
     int             getTrack()
     {
         foreach (Transform child in rGrid.transform)
         {
-            if (child.GetComponent<GridData>().posX == m_nCurrentGridX && child.GetComponent<GridData>().posY == m_nCurrentGridY)
+            GridData gData = child.GetComponent<GridData>();
+            if (gData.posX == m_nCurrentGridX && gData.posY == m_nCurrentGridY)
             {
-                if (child.tag == "DownUp")
+                if (gData.isTrack)
                 {
-                    // ^
-                    // |
-                    // |
-                    // v
-                    // Vertical track therefore 2 ways Up or Down
-                    if (m_nNextMove == UP)
+                    if (gData.TrackType == Track.Vertical)
                     {
-                        // Steer UP         
-                        m_nNextMove = UP;
-                        return VALID;
+                        // ^
+                        // |
+                        // |
+                        // v
+                        // Vertical track therefore 2 ways Up or Down
+                        if (m_nNextMove == UP)
+                        {
+                            // Steer UP         
+                            m_nNextMove = UP;
+                            return VALID;
+                        }
+                        else if (m_nNextMove == DOWN)
+                        {
+                            // Steer DOWN
+                            m_nNextMove = DOWN;
+                            return VALID;
+                        }
+                        //Debug.Log("DownUp is invalid");
+                        return INVALID;
                     }
-                    else if (m_nNextMove == DOWN)
+                    else if (gData.TrackType == Track.Horizontal)
                     {
-                        // Steer DOWN
-                        m_nNextMove = DOWN;
-                        return VALID;
+                        // < ---------- >
+                        // Horizontal Track
+                        if (m_nNextMove == LEFT)
+                        {
+                            // Steer Left
+                            m_nNextMove = LEFT;
+                            return VALID;
+                        }
+                        else if (m_nNextMove == RIGHT)
+                        {
+                            // Steer Right
+                            m_nNextMove = RIGHT;
+                            return VALID;
+                        }
+                        //Debug.Log("LeftRight is invalid");
+                        return INVALID;
                     }
-                    Debug.Log("DownUp is invalid");
-                    return INVALID;
+                    else if (gData.TrackType == Track.UpRight)
+                    {
+                        // ^
+                        // |
+                        // - - >
+                        if (m_nNextMove == DOWN)
+                        {
+                            // Going downward so steer right
+                            m_nNextMove = RIGHT;
+                            m_bTurnFactor = false;
+                            return VALID;
+                        }
+                        else if (m_nNextMove == LEFT)
+                        {
+                            // Facing Left so steer Up
+                            m_nNextMove = UP;
+                            m_bTurnFactor = true;
+                            return VALID;
+                        }
+                        //Debug.Log("UpRight is invalid");
+                        return INVALID;
+                    }
+                    else if (gData.TrackType == Track.UpLeft)
+                    {
+                        //     ^
+                        //     |
+                        //  <- - 
+                        if (m_nNextMove == DOWN)
+                        {
+                            // Going downward so steer Left
+                            m_nNextMove = LEFT;
+                            m_bTurnFactor = true;
+                            return VALID;
+                        }
+                        else if (m_nNextMove == RIGHT)
+                        {
+                            // Facing Right so steer Up
+                            m_nNextMove = UP;
+                            m_bTurnFactor = false;
+                            return VALID;
+                        }
+                        //Debug.Log("UpLeft is Invalid");
+                        return INVALID;
+                    }
+                    else if (gData.TrackType == Track.DownRight)
+                    {
+                        // - - >
+                        // |
+                        // v
+                        if (m_nNextMove == LEFT)
+                        {
+                            // Facing Left so steer Down
+                            m_nNextMove = DOWN;
+                            m_bTurnFactor = false;
+                            return VALID;
+                        }
+                        else if (m_nNextMove == UP)
+                        {
+                            // Facing up so steer right
+                            m_nNextMove = RIGHT;
+                            m_bTurnFactor = true;
+                            return VALID;
+                        }
+                        //Debug.Log("DownRight is invalid");
+                        return INVALID;
+                    }
+                    else if (gData.TrackType == Track.DownLeft)
+                    {
+                        // <- - 
+                        //    |
+                        //    v
+                        if (m_nNextMove == RIGHT)
+                        {
+                            // Facing Right so steer Down
+                            m_nNextMove = DOWN;
+                            m_bTurnFactor = true;
+                            return VALID;
+                        }
+                        else if (m_nNextMove == UP)
+                        {
+                            // Facing up so steer Left
+                            m_nNextMove = LEFT;
+                            m_bTurnFactor = false;
+                            return VALID;
+                        }
+                        //Debug.Log("DownLeft is invalid");
+                        return INVALID;
+                    }
                 }
-                else if (child.tag == "LeftRight")
-                {
-                    // < ---------- >
-                    // Horizontal Track
-                    if (m_nNextMove == LEFT)
-                    {
-                        // Steer Left
-                        m_nNextMove = LEFT;
-                        return VALID;
-                    }
-                    else if (m_nNextMove == RIGHT)
-                    {
-                        // Steer Right
-                        m_nNextMove = RIGHT;
-                        return VALID;
-                    }
-                    Debug.Log("LeftRight is invalid");
-                    return INVALID;
-                }
-                else if (child.tag == "UpRight")
-                {
-                    // ^
-                    // |
-                    // - - >
-                    if (m_nNextMove == DOWN)
-                    {
-                        // Going downward so steer right
-                        m_nNextMove = RIGHT;
-                        m_bTurnFactor = false;
-                        return VALID;
-                    }
-                    else if (m_nNextMove == LEFT)
-                    {
-                        // Facing Left so steer Up
-                        m_nNextMove = UP;
-                        m_bTurnFactor = true;
-                        return VALID;
-                    }
-                    Debug.Log("UpRight is invalid");
-                    return INVALID;
-                }
-                else if (child.tag == "UpLeft")
-                {
-                    //     ^
-                    //     |
-                    //  <- - 
-                    if (m_nNextMove == DOWN)
-                    {
-                        // Going downward so steer Left
-                        m_nNextMove = LEFT;
-                        m_bTurnFactor = true;
-                        return VALID;
-                    }
-                    else if (m_nNextMove == RIGHT)
-                    {
-                        // Facing Right so steer Up
-                        m_nNextMove = UP;
-                        m_bTurnFactor = false;
-                        return VALID;
-                    }
-                    Debug.Log("UpLeft is Invalid");
-                    return INVALID;
-                }
-                else if (child.tag == "DownRight")
-                {
-                    // - - >
-                    // |
-                    // v
-                    if (m_nNextMove == LEFT)
-                    {
-                        // Facing Left so steer Down
-                        m_nNextMove = DOWN;
-                        m_bTurnFactor = false;
-                        return VALID;
-                    }
-                    else if (m_nNextMove == UP)
-                    {
-                        // Facing up so steer right
-                        m_nNextMove = RIGHT;
-                        m_bTurnFactor = true;
-                        return VALID;
-                    }
-                    Debug.Log("DownRight is invalid");
-                    return INVALID;
-                }
-                else if (child.tag == "DownLeft")
-                {
-                    // <- - 
-                    //    |
-                    //    v
-                    if (m_nNextMove == RIGHT)
-                    {
-                        // Facing Right so steer Down
-                        m_nNextMove = DOWN;
-                        m_bTurnFactor = true;
-                        return VALID;
-                    }
-                    else if (m_nNextMove == UP)
-                    {
-                        // Facing up so steer Left
-                        m_nNextMove = LEFT;
-                        m_bTurnFactor = false;
-                        return VALID;
-                    }
-                    Debug.Log("DownLeft is invalid");
-                    return INVALID;
-                }
+                return INVALID;
             }
         }
         return INVALID;
@@ -516,6 +695,21 @@ public class TrainAI : MonoBehaviour {
     public void     moveTrain()
     {
         m_bMove = !m_bMove;
+
+        if (checkAhead())
+        {
+            // Check if it destination and if there is a track
+            if (checkTrack() == INVALID)
+            {
+                Debug.Log("Invalid Track Train Stopping");
+                m_bMove = false;
+            }
+            else if (checkTrack() == OUT)
+            {
+                Debug.Log("No Track Train Stopping");
+                m_bMove = false;
+            }
+        }
     }
 
     // Button Press

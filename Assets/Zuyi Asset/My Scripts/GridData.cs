@@ -1,6 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+// Written by NCA
+public enum Building
+{
+	Depot,
+	Windmill
+};
+
+public enum Track
+{
+	Horizontal,
+	Vertical,
+	DownLeft,
+	DownRight,
+	UpLeft,
+	UpRight
+};
+
 public class GridData : MonoBehaviour {
 
 	public int posX;
@@ -10,6 +27,9 @@ public class GridData : MonoBehaviour {
 	public bool isDestination;
 	public bool isTrack;
 	public bool isBuilding;
+
+	public Building buildingType;
+    public Track TrackType;
 
 	// Use this for initialization
 	void Start () {
