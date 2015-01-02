@@ -24,6 +24,8 @@ public class InputController : MonoBehaviour {
 	//placement plane items
 	private GameObject lastHitObj;
 
+    public GameObject trainControl;
+
     void Update()
     {
         // Check if the mouse is within the playable area
@@ -112,7 +114,6 @@ public class InputController : MonoBehaviour {
                             GameObject TargetObj = Instantiate(Target, lastHitObj.transform.position, Quaternion.identity) as GameObject;
 
                             GridData temp = lastHitObj.GetComponent<GridData>();
-                            // LAST WORK HERE, NOW NEED TO UPDATE THE GRID DATA
 
                             if (isTrack)
                             {
@@ -141,21 +142,35 @@ public class InputController : MonoBehaviour {
                             currentlyBuilding = false;
                         }
                         else if (lastHitObj.tag == "Track" && isTrain)
-                        {                            
-                            //create Target (current track selected) at  lastHitObj.transform.position (center of the grid which cursor is in)
-                            GameObject TargetObj = Instantiate(Target, lastHitObj.transform.position + offset, Quaternion.identity) as GameObject;
-
+                        {
                             GridData temp = lastHitObj.GetComponent<GridData>();
+                            // Check if the track is occuppied by another track
+                            if (!temp.isOccupied)
+                            { 
+                                //create Target (current track selected) at  lastHitObj.transform.position (center of the grid which cursor is in)
+                                GameObject TargetObj = Instantiate(Target, lastHitObj.transform.position, Quaternion.identity) as GameObject;                 
 
-                            TargetObj.name = "Steam";
+                                // Give the gameobject a name
+                                TargetObj.name = "Steam";
 
-                            //temporarily hide the track that is following the cursor by changing its position to be the same as the new track created
-                            Target.transform.position += new Vector3(0,100,0);
+                                // Get the TrainAI to set the position of the train
+                                TargetObj.GetComponent<TrainAI>().setTrainPos(temp.posX,temp.posY);
 
-                            isTrack = false;
-                            isTrain = false;
-                            isBuilding = false;
-                            currentlyBuilding = false;
+                                // Set the train track to be occupied so it cant be removed.
+                                // no more new train can put on the track.
+                                temp.isOccupied = true;
+
+                                //temporarily hide the train that is following the cursor by changing its position to be the same as the new track created
+                                Target.transform.position += new Vector3(0,100,0);
+
+                                // Add train to train control
+                                TargetObj.transform.parent = trainControl.transform;
+
+                                isTrack = false;
+                                isTrain = false;
+                                isBuilding = false;
+                                currentlyBuilding = false;
+                            }
                         }
                     }
 
@@ -177,9 +192,10 @@ public class InputController : MonoBehaviour {
         //Debug.DrawRay(ray.origin, ray.direction * raycastLength, Color.yellow);
     }
 
+    // NCA: Check within clickable screen
     bool checkWithinBounds(float mouseX, float mouseY)
     {
-        // NCA: Check within screen
+        
         // mouse x - 200 cause of the UIs
         if (mouseX < 0 || mouseX > Screen.width - 200 || mouseY < 0 || mouseY > Screen.height)
         {
@@ -188,6 +204,9 @@ public class InputController : MonoBehaviour {
         return true;
     }
 
+    // NCA: This function will hide the gameobject selected if it is not the same as the currentSelected
+    // NCA: E.g Previous selection is horizontal track, and current selection is vertical track. 
+    // NCA: It will hide the horizontal track and change the one following the mouse to vertical track.
     void hidePrevious()
     {
         GameObject hideTarget = GameObject.Find(currentItemSelected);
@@ -290,4 +309,12 @@ public class InputController : MonoBehaviour {
         currentlyBuilding = true;
 	}
 	//----- END FUNCTIONS FOR BUTTON PRESSED ON GUI -----
+
+    public void PlayPausePressed()
+    {
+         foreach (Transform child in trainControl.transform)
+        {
+            child.GetComponent<TrainAI>().moveTrain();
+        }
+    }
 }

@@ -909,10 +909,10 @@ Prefab:
     - target: {fileID: 11400132, guid: d65b6f7c8fd932b4492126f0b3f86dfe, type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 155591592}
+      objectReference: {fileID: 1445469514}
     - target: {fileID: 11400132, guid: d65b6f7c8fd932b4492126f0b3f86dfe, type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: moveTrain
+      value: PlayPausePressed
       objectReference: {fileID: 0}
     - target: {fileID: 11400132, guid: d65b6f7c8fd932b4492126f0b3f86dfe, type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -4302,6 +4302,33 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 223461961}
   m_GameObject: {fileID: 547273148}
+--- !u!1 &551889604
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 551889605}
+  m_Layer: 0
+  m_Name: TrainControl
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &551889605
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 551889604}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -5.03244114, y: 1.0872488, z: 10.8273134}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 15
 --- !u!1 &552448519
 GameObject:
   m_ObjectHideFlags: 0
@@ -7091,8 +7118,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 155591592}
-        m_MethodName: moveTrain
+      - m_Target: {fileID: 1445469514}
+        m_MethodName: PlayPausePressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7275,6 +7302,7 @@ MonoBehaviour:
   isTrack: 0
   isBuilding: 0
   isTrain: 0
+  trainControl: {fileID: 551889604}
 --- !u!1 &1461299525
 GameObject:
   m_ObjectHideFlags: 0
