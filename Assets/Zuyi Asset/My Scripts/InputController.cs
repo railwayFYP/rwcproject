@@ -45,11 +45,7 @@ public class InputController : MonoBehaviour {
                     {
                         if (lastHitObj.tag != "Open")
                         {
-                            //destroy child of grid clicked
-                            foreach (Transform child in lastHitObj.transform)
-                            {
-                                Destroy(child.gameObject);
-                            }
+                            bool removeObj = false;
 
                             GridData temp = lastHitObj.GetComponent<GridData>();
 
@@ -57,21 +53,31 @@ public class InputController : MonoBehaviour {
                             {
                                 isBuilding = true;
                                 buildingSelected = temp.buildingType;
+                                removeObj = true;
                             }
-                            else if (temp.isTrack)
+                            else if (temp.isTrack && !temp.isOccupied)
                             {
                                 isTrack = true;
                                 trackSelected = temp.TrackType;
+                                removeObj = true;
                             }
 
-                            // Reset the Grid Data
-                            temp.isBuilding = false;
-                            temp.isTrack = false;
-                            temp.isDepot = false;
+                            if (removeObj)
+                            {
+                                //destroy child of grid clicked
+                                foreach (Transform child in lastHitObj.transform)
+                                {
+                                    Destroy(child.gameObject);
+                                }
+                                // Reset the Grid Data
+                                temp.isBuilding = false;
+                                temp.isTrack = false;
+                                temp.isDepot = false;
 
 
-                            currentlyBuilding = true;
-                            lastHitObj.tag = "Open";
+                                currentlyBuilding = true;
+                                lastHitObj.tag = "Open";
+                            }
                         }
 
                     }
@@ -145,7 +151,7 @@ public class InputController : MonoBehaviour {
                         {
                             GridData temp = lastHitObj.GetComponent<GridData>();
                             // Check if the track is occuppied by another track
-                            if (!temp.isOccupied)
+                            if (!temp.isOccupied && temp.TrackType == Track.Vertical)
                             { 
                                 //create Target (current track selected) at  lastHitObj.transform.position (center of the grid which cursor is in)
                                 GameObject TargetObj = Instantiate(Target, lastHitObj.transform.position, Quaternion.identity) as GameObject;                 

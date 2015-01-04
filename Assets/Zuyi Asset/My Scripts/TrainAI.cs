@@ -154,18 +154,53 @@ public class TrainAI : MonoBehaviour {
                 // moved out of current grid
                 if (!withinGrid())
                 {  
-                    m_bNextTrack = true;
-                    m_nCurrentGridX = m_nNextGridX;
-                    m_nCurrentGridY = m_nNextGridY;
+                    m_bNextTrack = true;                  
                 }
                 m_anim.Play("Moving");
             }
             else
             {
+                // Train attempted to retreive the next track
                 m_nTrackData = getTrack();
-                getGridPos();
-                m_bNextTrack = false;
-                m_bSnap = true;
+
+                Debug.Log("At Get new Track:" + m_nTrackData);
+
+                // If track is valid and is not occupied, train will tag that track as occupied and untag current track
+                if (m_nTrackData == VALID)
+                {                   
+                    // So that once they tag and untag the 2 track it will quit and stop looping through
+                    int checkCounter = 0; 
+
+                    foreach (Transform child in rGrid.transform)
+                    {
+                        // break for the loop, save calculation.
+                        if (checkCounter == 2)
+                        {
+                            Debug.Log("Done Tagging");
+                            break;
+                        }
+
+                        GridData gData = child.GetComponent<GridData>();
+                        if (gData.posX == m_nNextGridX && gData.posY == m_nNextGridY)
+                        {
+                            gData.isOccupied = true;                         
+                            checkCounter++;
+                        }
+                        else if (gData.posX == m_nCurrentGridX && gData.posY == m_nCurrentGridY)
+                        {
+                            gData.isOccupied = false;    
+                            checkCounter++;
+                        }
+                     }
+
+                    m_nCurrentGridX = m_nNextGridX;
+                    m_nCurrentGridY = m_nNextGridY;
+
+                    getGridPos();
+                    m_bNextTrack = false;
+                    m_bSnap = true;
+           
+                }     
             }
 
             // Check if it reached the outside of the grid
@@ -379,7 +414,7 @@ public class TrainAI : MonoBehaviour {
             GridData gData = child.GetComponent<GridData>();
             if (gData.posX == m_nNextGridX && gData.posY == m_nNextGridY)
             {
-                if (gData.isTrack)
+                if (gData.isTrack && !gData.isOccupied)
                 {
                     if (gData.TrackType == Track.Vertical)
                     {
@@ -503,7 +538,7 @@ public class TrainAI : MonoBehaviour {
         foreach (Transform child in rGrid.transform)
         {
             GridData gData = child.GetComponent<GridData>();
-            if (gData.posX == m_nCurrentGridX && gData.posY == m_nCurrentGridY)
+            if (gData.posX == m_nNextGridX && gData.posY == m_nNextGridY)
             {
                 if (gData.isTrack)
                 {
@@ -687,6 +722,9 @@ public class TrainAI : MonoBehaviour {
         // Set the train Grid Position
         m_nCurrentGridX = _gridX;
         m_nCurrentGridY = _gridY;
+
+        m_nNextGridX = _gridX;
+        m_nNextGridY = _gridY;
     }
 
     // Set the train facing based on an angle given
