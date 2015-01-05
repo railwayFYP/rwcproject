@@ -5,6 +5,8 @@ using System.Collections;
 // Raycast by Jack
 
 public class InputController : MonoBehaviour {
+    // Train conrol
+    private bool moveTrain = false;
 
 	RaycastHit hit;
 
@@ -162,6 +164,10 @@ public class InputController : MonoBehaviour {
                                 // Get the TrainAI to set the position of the train
                                 TargetObj.GetComponent<TrainAI>().setTrainPos(temp.posX,temp.posY);
 
+                                if (moveTrain)
+                                {
+                                    TargetObj.GetComponent<TrainAI>().moveTrain();
+                                }
                                 // Set the train track to be occupied so it cant be removed.
                                 // no more new train can put on the track.
                                 temp.isOccupied = true;
@@ -301,7 +307,20 @@ public class InputController : MonoBehaviour {
         isTrack = true;
         currentlyBuilding = true;
 	}
-
+    // Buildings
+    public void DepotPressed()
+    {
+        if (buildingSelected != Building.Depot || !isBuilding)
+        {
+            hidePrevious();
+            isTrack = false;
+            isTrain = false;
+        }
+        buildingSelected = Building.Depot;
+        isBuilding = true;
+        currentlyBuilding = true;
+    }
+    // Trains
 	public void SteamTrainPressed()
 	{
         if (trainSelected != TrainType.Steam || !isTrain)
@@ -318,6 +337,7 @@ public class InputController : MonoBehaviour {
 
     public void PlayPausePressed()
     {
+        moveTrain = !moveTrain;
          foreach (Transform child in trainControl.transform)
         {
             child.GetComponent<TrainAI>().moveTrain();

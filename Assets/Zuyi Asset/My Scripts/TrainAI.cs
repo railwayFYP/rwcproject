@@ -34,6 +34,7 @@ public class TrainAI : MonoBehaviour {
     const int           INVALID = 0;
     const int           VALID   = 1;
     const int           OUT     = 2;
+    const int           USED    = 3;
 
     // Constant Direction for the train movement
     const int           UP      = 1;
@@ -49,6 +50,7 @@ public class TrainAI : MonoBehaviour {
 
     // Bool for the train to move
     public bool         m_bMove     = false;
+    public bool         m_bWaiting  = false;
 
     // Bool for the train to trigger the snapping when steering
     public bool         m_bSnap         = true;
@@ -130,77 +132,92 @@ public class TrainAI : MonoBehaviour {
 
         if (m_bMove)
         {
-            if (m_nTrackData == VALID && !m_bNextTrack)
+            if (m_nTrackData == VALID && !m_bNextTrack && !m_bWaiting)
             {
+                m_anim.Play("Moving");
+
                 steer(); // Steers the train (controls the rotation)
                 this.transform.Translate(0, 0, m_fMovespeed); // Move the train forward according to it rotation (Direction)
 
-                // check next grid if it is a valid track
-                if (checkAhead())
+                // moved out of current grid
+                if (!withinGrid())
                 {
+                    m_bNextTrack = true;
+                }
+                else if (checkAhead())
+                {
+                    // check next grid if it is a valid track
                     // Check if it destination and if there is a track
-                    if (checkTrack() == INVALID)
+                    if (checkTrack() == USED)
                     {
-                        Debug.Log("Invalid Track Train Stopping");
-                        m_bMove = false;
+                        Debug.Log("Train Ahead on use, train set to wait mode");
+                        m_bWaiting = true;
                     }
                     else if (checkTrack() == OUT)
                     {
-                        Debug.Log("No Track Train Stopping");
-                        m_bMove = false;
+                        Debug.Log("No Track Train going into wait mode");
+                        m_bWaiting = true;
                     }
                 }
-
-                // moved out of current grid
-                if (!withinGrid())
-                {  
-                    m_bNextTrack = true;                  
+                
+            }
+            else if (m_bWaiting)
+            {
+                m_anim.Play("Idle");
+                // Train will enter this area if it is waiting for the track to clear before it moves
+                if (checkAhead())
+                {
+                    if (checkTrack() == VALID)
+                    {
+                        m_bWaiting = false;
+                    }
                 }
-                m_anim.Play("Moving");
             }
             else
             {
                 // Train attempted to retreive the next track
                 m_nTrackData = getTrack();
 
-                Debug.Log("At Get new Track:" + m_nTrackData);
+                //Debug.Log("At Get new Track:" + m_nTrackData);
 
                 // If track is valid and is not occupied, train will tag that track as occupied and untag current track
                 if (m_nTrackData == VALID)
-                {                   
+                {
                     // So that once they tag and untag the 2 track it will quit and stop looping through
-                    int checkCounter = 0; 
+                    int checkCounter = 0;
 
+                    // This is for tagging the track so that other track cannot access this track.
                     foreach (Transform child in rGrid.transform)
                     {
                         // break for the loop, save calculation.
                         if (checkCounter == 2)
                         {
-                            Debug.Log("Done Tagging");
+                            //Debug.Log("Done Tagging");
                             break;
                         }
 
                         GridData gData = child.GetComponent<GridData>();
                         if (gData.posX == m_nNextGridX && gData.posY == m_nNextGridY)
                         {
-                            gData.isOccupied = true;                         
+                            gData.isOccupied = true;
                             checkCounter++;
                         }
                         else if (gData.posX == m_nCurrentGridX && gData.posY == m_nCurrentGridY)
                         {
-                            gData.isOccupied = false;    
+                            gData.isOccupied = false;
                             checkCounter++;
                         }
-                     }
+                    }
 
+                    // Change the currentGrid to next grid
                     m_nCurrentGridX = m_nNextGridX;
                     m_nCurrentGridY = m_nNextGridY;
 
                     getGridPos();
                     m_bNextTrack = false;
                     m_bSnap = true;
-           
-                }     
+
+                }    
             }
 
             // Check if it reached the outside of the grid
@@ -414,7 +431,11 @@ public class TrainAI : MonoBehaviour {
             GridData gData = child.GetComponent<GridData>();
             if (gData.posX == m_nNextGridX && gData.posY == m_nNextGridY)
             {
-                if (gData.isTrack && !gData.isOccupied)
+                if (gData.isTrack && gData.isOccupied)
+                {
+                    return USED;
+                }
+                else if (gData.isTrack && !gData.isOccupied)
                 {
                     if (gData.TrackType == Track.Vertical)
                     {

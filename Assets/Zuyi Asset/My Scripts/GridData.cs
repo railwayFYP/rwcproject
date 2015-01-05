@@ -31,7 +31,7 @@ public class GridData : MonoBehaviour {
 
 	public Building buildingType;
     public Track TrackType;
-
+ 
 	// Use this for initialization
 	void Start () {
 	
