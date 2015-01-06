@@ -105,7 +105,7 @@ public class InputController : MonoBehaviour {
                     //position of Target (current track selected) follows the position of hit.point (mouse cursor)
                     Target.transform.position = hit.point;
 
-                    Vector3 offset = new Vector3(0, 8.75f, -2.5f);
+                    Vector3 offset = new Vector3(0, 0, 0);
                     if (isTrain)
                     {      
                         Target.transform.position += offset;
@@ -136,6 +136,11 @@ public class InputController : MonoBehaviour {
                                 temp.isBuilding = true;
                                 temp.buildingType = buildingSelected;
                                 TargetObj.name = "Building Created";
+
+                                if (buildingSelected == Building.Depot)
+                                {
+                                    temp.isDepot = true;
+                                }
                             }
 
                             //creates the obj as the child of the grid
@@ -221,8 +226,20 @@ public class InputController : MonoBehaviour {
     // NCA: It will hide the horizontal track and change the one following the mouse to vertical track.
     void hidePrevious()
     {
-        GameObject hideTarget = GameObject.Find(currentItemSelected);
+        GameObject hideTarget;
 
+        if (isTrack)
+        {
+            hideTarget = GameObject.Find(trackSelected.ToString());
+        }
+        else if (isBuilding)
+        {
+            hideTarget = GameObject.Find(buildingSelected.ToString());
+        }
+        else
+        {
+            hideTarget = GameObject.Find(trainSelected.ToString());
+        }
         if (hideTarget != null)
         {
             hideTarget.transform.position = transform.up * 100;

@@ -53,6 +53,7 @@
      <Compile Include="Assets\Scripts\OptionsMenuScript.cs" />
      <Compile Include="Assets\Scripts\PauseMenuScript.cs" />
      <Compile Include="Assets\Scripts\UpdateVolValueScript.cs" />
+     <Compile Include="Assets\Zuyi Asset\My Scripts\DepotAI.cs" />
      <Compile Include="Assets\Zuyi Asset\My Scripts\GenerateGrid.cs" />
      <Compile Include="Assets\Zuyi Asset\My Scripts\GridData.cs" />
      <Compile Include="Assets\Zuyi Asset\My Scripts\InputController.cs" />

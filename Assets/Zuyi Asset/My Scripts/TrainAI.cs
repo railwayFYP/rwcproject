@@ -78,7 +78,7 @@ public class TrainAI : MonoBehaviour {
     public int          m_nNextGridY = -1;
 
     // Int that store the direction of the next movement for the train
-    public int          m_nNextMove = 0;
+    public int          m_nNextMove = 1;
 
     // Vector that store the position to move to
     private Vector3     m_vNextPos;
@@ -738,7 +738,7 @@ public class TrainAI : MonoBehaviour {
     public void     setTrainPos(int _gridX, int _gridY)
     {
         // Set the train to the correct position offseted by the given value.
-        this.transform.position = new Vector3(_gridX * 10, 8.75f, (_gridY * 10) - 2.5f);
+        this.transform.position = new Vector3(_gridX * 10, 0, (_gridY * 10));
 
         // Set the train Grid Position
         m_nCurrentGridX = _gridX;
