@@ -27,7 +27,7 @@ public class DepotAI : MonoBehaviour {
         {
             inTransition = false;
         }
-        else if (m_anim.GetCurrentAnimatorStateInfo(0).IsName("BOpened") && !isBOpen)
+        else if (m_anim.GetCurrentAnimatorStateInfo(0).IsName("BOpened") && isBOpen)
         {
             inTransition = false;
         }

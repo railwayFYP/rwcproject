@@ -35,6 +35,7 @@ public class TrainAI : MonoBehaviour {
     const int           VALID   = 1;
     const int           OUT     = 2;
     const int           USED    = 3;
+    const int           DEPOT   = 4;
 
     // Constant Direction for the train movement
     const int           UP      = 1;
@@ -51,6 +52,7 @@ public class TrainAI : MonoBehaviour {
     // Bool for the train to move
     public bool         m_bMove     = false;
     public bool         m_bWaiting  = false;
+    public bool         m_bInDepot  = false;
 
     // Bool for the train to trigger the snapping when steering
     public bool         m_bSnap         = true;
@@ -150,12 +152,12 @@ public class TrainAI : MonoBehaviour {
                     // Check if it destination and if there is a track
                     if (checkTrack() == USED)
                     {
-                        Debug.Log("Train Ahead on use, train set to wait mode");
+                        //Debug.Log("Train Ahead on use, train set to wait mode");
                         m_bWaiting = true;
                     }
                     else if (checkTrack() == OUT)
                     {
-                        Debug.Log("No Track Train going into wait mode");
+                        //Debug.Log("No Track Train going into wait mode");
                         m_bWaiting = true;
                     }
                 }
@@ -391,10 +393,17 @@ public class TrainAI : MonoBehaviour {
     // Check if train is within the checkAhead grid
     bool            checkAhead()
     {
-        int left = (m_nCurrentGridX * 10) - 2;
-        int right = (m_nCurrentGridX * 10) + 2;
-        int up = (m_nCurrentGridY * 10) + 2;
-        int down = (m_nCurrentGridY * 10) - 2;
+        float checkValue = 2;
+
+        if (m_bInDepot)
+        {
+            checkValue = 0.1f;
+        }
+
+        float left = (m_nCurrentGridX * 10) - checkValue;
+        float right = (m_nCurrentGridX * 10) + checkValue;
+        float up = (m_nCurrentGridY * 10) + checkValue;
+        float down = (m_nCurrentGridY * 10) - checkValue;
 
         Vector3 trainPos = this.transform.position;
 
@@ -424,6 +433,7 @@ public class TrainAI : MonoBehaviour {
 
     // Check if there is track ahead of the train
     // NCA: IMPORTANT : Currently the next grid is not update so its hard to check next grid, need rearrange the logic here
+    // NCA: Difference between gettrack, this does not set the next move
     int             checkTrack()
     {
         foreach (Transform child in rGrid.transform)
@@ -435,115 +445,158 @@ public class TrainAI : MonoBehaviour {
                 {
                     return USED;
                 }
+                else if (gData.isDepot)
+                {
+                    Debug.Log("Checking depot");
+
+                    Transform depot = child.FindChild("Depot Created");
+
+                    DepotAI dData = depot.GetComponent<DepotAI>();
+
+                    // If the train found a depot ahead, it will try to ask the depot to open the door
+                    // If the door is opened, it will move into the depot and stop.
+                    // This set of codes is for handling when the train found the depot ahead.
+                    if(!m_bInDepot)
+                    {
+                        
+                        if (m_nNextMove == UP)
+                        {
+                            if (!dData.isFOpen)
+                            {
+                                dData.openFDepotDoor();
+                                return USED;
+                            }
+                            else if (dData.isFOpen && !dData.inTransition)
+                            {
+                                return VALID;                 
+                            }
+                        }
+                        else if (m_nNextMove == DOWN)
+                        {
+                            if (!dData.isBOpen)
+                            {
+                                dData.openBDepotDoor();
+                                return USED;
+                            }
+                            else if (dData.isBOpen && !dData.inTransition)
+                            {
+                                return VALID; 
+                            } 
+                        }
+                    }
+                    // This part of the code will handle when the train is in the depot
+                    else if (m_bInDepot)
+                    {                      
+                        if (m_nNextMove == UP)
+                        {
+
+                            if (dData.isFOpen)
+                            {
+                                dData.closeFDepotDoor();
+                                return USED;
+                            }
+                            else if (!dData.isBOpen && !dData.inTransition)
+                            {
+                                dData.openBDepotDoor();
+                                return USED;
+                            }
+                            else if (dData.isBOpen && !dData.inTransition)
+                            {
+                                return VALID;
+                            }
+                        }
+                        else if (m_nNextMove == DOWN)
+                        {
+                            
+                            if (dData.isBOpen)
+                            {
+                                dData.closeBDepotDoor();
+                                return USED;
+                            }
+                            else if (!dData.isFOpen && !dData.inTransition)
+                            {
+                                dData.openFDepotDoor();
+                                return USED;
+                            }
+                            else if (dData.isFOpen && !dData.inTransition)
+                            {
+                                return VALID;
+                            }
+                        }
+                    }
+                }
                 else if (gData.isTrack && !gData.isOccupied)
                 {
                     if (gData.TrackType == Track.Vertical)
                     {
-                        // ^
-                        // |
-                        // |
-                        // v
-                        // Vertical track therefore 2 ways Up or Down
                         if (m_nNextMove == UP)
-                        {
-                            // Steer UP         
+                        { 
                             return VALID;
                         }
                         else if (m_nNextMove == DOWN)
                         {
-                            // Steer DOWN
                             return VALID;
                         }
-                        //Debug.Log("DownUp is invalid");
                         return INVALID;
                     }
                     else if (gData.TrackType == Track.Horizontal)
                     {
-                        // < ---------- >
-                        // Horizontal Track
                         if (m_nNextMove == LEFT)
                         {
-                            // Steer Left
                             return VALID;
                         }
                         else if (m_nNextMove == RIGHT)
                         {
-                            // Steer Right
                             return VALID;
                         }
-                        //Debug.Log("LeftRight is invalid");
                         return INVALID;
                     }
                     else if (gData.TrackType == Track.UpRight)
                     {
-                        // ^
-                        // |
-                        // - - >
                         if (m_nNextMove == DOWN)
                         {
-                            // Going downward so steer right
                             return VALID;
                         }
                         else if (m_nNextMove == LEFT)
                         {
-                            // Facing Left so steer Up
                             return VALID;
                         }
-                        //Debug.Log("UpRight is invalid");
                         return INVALID;
                     }
                     else if (gData.TrackType == Track.UpLeft)
                     {
-                        //     ^
-                        //     |
-                        //  <- - 
                         if (m_nNextMove == DOWN)
                         {
-                            // Going downward so steer Left
                             return VALID;
                         }
                         else if (m_nNextMove == RIGHT)
                         {
-                            // Facing Right so steer Up
                             return VALID;
                         }
-                        //Debug.Log("UpLeft is Invalid");
                         return INVALID;
                     }
                     else if (gData.TrackType == Track.DownRight)
                     {
-                        // - - >
-                        // |
-                        // v
                         if (m_nNextMove == LEFT)
                         {
-                            // Facing Left so steer Down
                             return VALID;
                         }
                         else if (m_nNextMove == UP)
                         {
-                            // Facing up so steer right
                             return VALID;
                         }
-                        //Debug.Log("DownRight is invalid");
                         return INVALID;
                     }
                     else if (gData.TrackType == Track.DownLeft)
                     {
-                        // <- - 
-                        //    |
-                        //    v
                         if (m_nNextMove == RIGHT)
                         {
-                            // Facing Right so steer Down
                             return VALID;
                         }
                         else if (m_nNextMove == UP)
                         {
-                            // Facing up so steer Left
                             return VALID;
                         }
-                        //Debug.Log("DownLeft is invalid");
                         return INVALID;
                     }
                 }
@@ -561,6 +614,12 @@ public class TrainAI : MonoBehaviour {
             GridData gData = child.GetComponent<GridData>();
             if (gData.posX == m_nNextGridX && gData.posY == m_nNextGridY)
             {
+                // If it is moving into a depot
+                if (gData.isDepot)
+                {
+                    m_bInDepot = true;
+                }
+
                 if (gData.isTrack)
                 {
                     if (gData.TrackType == Track.Vertical)
@@ -738,7 +797,7 @@ public class TrainAI : MonoBehaviour {
     public void     setTrainPos(int _gridX, int _gridY)
     {
         // Set the train to the correct position offseted by the given value.
-        this.transform.position = new Vector3(_gridX * 10, 0, (_gridY * 10));
+        this.transform.position = new Vector3(_gridX * 10, 0, (_gridY * 10) - 1);
 
         // Set the train Grid Position
         m_nCurrentGridX = _gridX;

@@ -139,7 +139,11 @@ public class InputController : MonoBehaviour {
 
                                 if (buildingSelected == Building.Depot)
                                 {
+                                    lastHitObj.tag = "Track";
                                     temp.isDepot = true;
+                                    temp.isTrack = true;
+                                    temp.TrackType = Track.Vertical;
+                                    TargetObj.name = "Depot Created";
                                 }
                             }
 
@@ -147,7 +151,7 @@ public class InputController : MonoBehaviour {
                             TargetObj.transform.parent = lastHitObj.transform;
 
                             //temporarily hide the track that is following the cursor by changing its position to be the same as the new track created
-                            Target.transform.position = lastHitObj.transform.position;
+                            Target.transform.position = lastHitObj.transform.position * 100;
 
                             isTrack = false;
                             isTrain = false;

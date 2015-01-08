@@ -177,6 +177,64 @@ MeshFilter:
   m_PrefabInternal: {fileID: 397936081}
   m_GameObject: {fileID: 13178865}
   m_Mesh: {fileID: 4300008, guid: 3a943f2706f7ca946899db4cf42a4770, type: 3}
+--- !u!1 &37535282
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 182596, guid: d901d94dfae57834198600dc30561488, type: 2}
+  m_PrefabInternal: {fileID: 1949999658}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 37535283}
+  - 33: {fileID: 37535285}
+  - 23: {fileID: 37535284}
+  m_Layer: 0
+  m_Name: TrainDepot:Door
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &37535283
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 482596, guid: d901d94dfae57834198600dc30561488, type: 2}
+  m_PrefabInternal: {fileID: 1949999658}
+  m_GameObject: {fileID: 37535282}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0, y: -3.84716821, z: .26987502}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 750458667}
+  m_RootOrder: 0
+--- !u!23 &37535284
+Renderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 2382596, guid: d901d94dfae57834198600dc30561488,
+    type: 2}
+  m_PrefabInternal: {fileID: 1949999658}
+  m_GameObject: {fileID: 37535282}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_LightmapIndex: 255
+  m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
+  m_Materials:
+  - {fileID: 2100000, guid: 50aea8ae43aa0584b9c736ea0e7cd119, type: 2}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 0
+  m_LightProbeAnchor: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+--- !u!33 &37535285
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 3382596, guid: d901d94dfae57834198600dc30561488,
+    type: 2}
+  m_PrefabInternal: {fileID: 1949999658}
+  m_GameObject: {fileID: 37535282}
+  m_Mesh: {fileID: 4300006, guid: 5c99c909b120ba64ea477000d9b49583, type: 3}
 --- !u!1 &38199643
 GameObject:
   m_ObjectHideFlags: 0
@@ -434,6 +492,68 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 223461961}
   m_GameObject: {fileID: 166833747}
+--- !u!1 &197350129
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 182578, guid: d901d94dfae57834198600dc30561488, type: 2}
+  m_PrefabInternal: {fileID: 1949999658}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 197350130}
+  - 95: {fileID: 197350133}
+  - 114: {fileID: 197350132}
+  m_Layer: 0
+  m_Name: Depot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &197350130
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 482578, guid: d901d94dfae57834198600dc30561488, type: 2}
+  m_PrefabInternal: {fileID: 1949999658}
+  m_GameObject: {fileID: 197350129}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 91.2300034, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 745893050}
+  - {fileID: 622937554}
+  m_Father: {fileID: 0}
+  m_RootOrder: 15
+--- !u!114 &197350132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11437224, guid: d901d94dfae57834198600dc30561488,
+    type: 2}
+  m_PrefabInternal: {fileID: 1949999658}
+  m_GameObject: {fileID: 197350129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d09c990d0fe3164c8fac7f871403aab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isFOpen: 0
+  isBOpen: 0
+  inTransition: 0
+--- !u!95 &197350133
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 9582596, guid: d901d94dfae57834198600dc30561488,
+    type: 2}
+  m_PrefabInternal: {fileID: 1949999658}
+  m_GameObject: {fileID: 197350129}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 5c99c909b120ba64ea477000d9b49583, type: 3}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 1
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!1001 &223461961
 Prefab:
   m_ObjectHideFlags: 0
@@ -792,7 +912,7 @@ Prefab:
     - target: {fileID: 11400066, guid: d65b6f7c8fd932b4492126f0b3f86dfe, type: 2}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 263491322}
+      objectReference: {fileID: 0}
     - target: {fileID: 11400066, guid: d65b6f7c8fd932b4492126f0b3f86dfe, type: 2}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: openFDepotDoor
@@ -812,7 +932,7 @@ Prefab:
     - target: {fileID: 11400128, guid: d65b6f7c8fd932b4492126f0b3f86dfe, type: 2}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 263491322}
+      objectReference: {fileID: 0}
     - target: {fileID: 11400128, guid: d65b6f7c8fd932b4492126f0b3f86dfe, type: 2}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: openBDepotDoor
@@ -840,14 +960,14 @@ Prefab:
     - target: {fileID: 11400096, guid: d65b6f7c8fd932b4492126f0b3f86dfe, type: 2}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 263491322}
+      objectReference: {fileID: 0}
     - target: {fileID: 11400096, guid: d65b6f7c8fd932b4492126f0b3f86dfe, type: 2}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 263491322}
+      objectReference: {fileID: 0}
     - target: {fileID: 11400096, guid: d65b6f7c8fd932b4492126f0b3f86dfe, type: 2}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: closeBDepotDoor
+      value: closeFDepotDoor
       objectReference: {fileID: 0}
     - target: {fileID: 11400096, guid: d65b6f7c8fd932b4492126f0b3f86dfe, type: 2}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -855,7 +975,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400096, guid: d65b6f7c8fd932b4492126f0b3f86dfe, type: 2}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: closeFDepotDoor
+      value: closeBDepotDoor
       objectReference: {fileID: 0}
     - target: {fileID: 11400096, guid: d65b6f7c8fd932b4492126f0b3f86dfe, type: 2}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -986,67 +1106,6 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 223461961}
   m_GameObject: {fileID: 237852489}
---- !u!1 &263491320
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100000, guid: a16150bf3db67774dbefe58dc2074741, type: 3}
-  m_PrefabInternal: {fileID: 946226909}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 263491321}
-  - 95: {fileID: 263491323}
-  - 114: {fileID: 263491322}
-  m_Layer: 0
-  m_Name: Depot
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &263491321
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400000, guid: a16150bf3db67774dbefe58dc2074741, type: 3}
-  m_PrefabInternal: {fileID: 946226909}
-  m_GameObject: {fileID: 263491320}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 100, z: 2.45000005}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1210460137}
-  - {fileID: 1080475643}
-  m_Father: {fileID: 0}
-  m_RootOrder: 14
---- !u!114 &263491322
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 263491320}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d09c990d0fe3164c8fac7f871403aab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isFOpen: 0
-  isBOpen: 0
-  inTransition: 0
---- !u!95 &263491323
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 9500000, guid: a16150bf3db67774dbefe58dc2074741,
-    type: 3}
-  m_PrefabInternal: {fileID: 946226909}
-  m_GameObject: {fileID: 263491320}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: a16150bf3db67774dbefe58dc2074741, type: 3}
-  m_Controller: {fileID: 9100000, guid: 1b23e75b778ee7e4997ac6baed7a305b, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
 --- !u!1 &265584242
 GameObject:
   m_ObjectHideFlags: 0
@@ -1211,7 +1270,7 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 263491322}
+      - m_Target: {fileID: 0}
         m_MethodName: openBDepotDoor
         m_Mode: 1
         m_Arguments:
@@ -2203,8 +2262,8 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 263491322}
-        m_MethodName: closeFDepotDoor
+      - m_Target: {fileID: 0}
+        m_MethodName: closeBDepotDoor
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2215,8 +2274,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 263491322}
-        m_MethodName: closeBDepotDoor
+      - m_Target: {fileID: 0}
+        m_MethodName: closeFDepotDoor
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2280,6 +2339,64 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AllowSwitchOff: 0
+--- !u!1 &397100401
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 182590, guid: d901d94dfae57834198600dc30561488, type: 2}
+  m_PrefabInternal: {fileID: 1949999658}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 397100402}
+  - 33: {fileID: 397100404}
+  - 23: {fileID: 397100403}
+  m_Layer: 0
+  m_Name: TrainDepot:RearLeft
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &397100402
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 482592, guid: d901d94dfae57834198600dc30561488, type: 2}
+  m_PrefabInternal: {fileID: 1949999658}
+  m_GameObject: {fileID: 397100401}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 3.4000001, y: .50999999, z: -5.27000046}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2093977653}
+  m_RootOrder: 2
+--- !u!23 &397100403
+Renderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 2382590, guid: d901d94dfae57834198600dc30561488,
+    type: 2}
+  m_PrefabInternal: {fileID: 1949999658}
+  m_GameObject: {fileID: 397100401}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_LightmapIndex: 255
+  m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
+  m_Materials:
+  - {fileID: 2100000, guid: 285b426c26755834b8c721e431db7c6b, type: 2}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 0
+  m_LightProbeAnchor: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+--- !u!33 &397100404
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 3382590, guid: d901d94dfae57834198600dc30561488,
+    type: 2}
+  m_PrefabInternal: {fileID: 1949999658}
+  m_GameObject: {fileID: 397100401}
+  m_Mesh: {fileID: 4300016, guid: 5c99c909b120ba64ea477000d9b49583, type: 3}
 --- !u!1001 &397936081
 Prefab:
   m_ObjectHideFlags: 0
@@ -2297,7 +2414,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 467306, guid: 2e64819082196de42a48e888ec9e879f, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 10.3900003
+      value: 14.2399998
       objectReference: {fileID: 0}
     - target: {fileID: 467306, guid: 2e64819082196de42a48e888ec9e879f, type: 2}
       propertyPath: m_LocalRotation.x
@@ -2317,7 +2434,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 467306, guid: 2e64819082196de42a48e888ec9e879f, type: 2}
       propertyPath: m_RootOrder
-      value: 15
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2e64819082196de42a48e888ec9e879f, type: 2}
@@ -2690,6 +2807,64 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 223461961}
   m_GameObject: {fileID: 502049299}
+--- !u!1 &513993374
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 182586, guid: d901d94dfae57834198600dc30561488, type: 2}
+  m_PrefabInternal: {fileID: 1949999658}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 513993375}
+  - 33: {fileID: 513993377}
+  - 23: {fileID: 513993376}
+  m_Layer: 0
+  m_Name: TrainDepot:FrontLeft
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &513993375
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 482588, guid: d901d94dfae57834198600dc30561488, type: 2}
+  m_PrefabInternal: {fileID: 1949999658}
+  m_GameObject: {fileID: 513993374}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 3.4000001, y: -.169999853, z: 5.27000046}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2093977653}
+  m_RootOrder: 0
+--- !u!23 &513993376
+Renderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 2382586, guid: d901d94dfae57834198600dc30561488,
+    type: 2}
+  m_PrefabInternal: {fileID: 1949999658}
+  m_GameObject: {fileID: 513993374}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_LightmapIndex: 255
+  m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
+  m_Materials:
+  - {fileID: 2100000, guid: 5fcf79105f068bd43883faad3eabae6d, type: 2}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 0
+  m_LightProbeAnchor: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+--- !u!33 &513993377
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 3382586, guid: d901d94dfae57834198600dc30561488,
+    type: 2}
+  m_PrefabInternal: {fileID: 1949999658}
+  m_GameObject: {fileID: 513993374}
+  m_Mesh: {fileID: 4300012, guid: 5c99c909b120ba64ea477000d9b49583, type: 3}
 --- !u!1 &518701456
 GameObject:
   m_ObjectHideFlags: 0
@@ -3560,6 +3735,67 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 223461961}
   m_GameObject: {fileID: 615334196}
+--- !u!1 &622937551
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 182582, guid: d901d94dfae57834198600dc30561488, type: 2}
+  m_PrefabInternal: {fileID: 1949999658}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 622937554}
+  - 33: {fileID: 622937553}
+  - 23: {fileID: 622937552}
+  m_Layer: 0
+  m_Name: TrainDepot:Roof
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!23 &622937552
+Renderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 2382582, guid: d901d94dfae57834198600dc30561488,
+    type: 2}
+  m_PrefabInternal: {fileID: 1949999658}
+  m_GameObject: {fileID: 622937551}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_LightmapIndex: 255
+  m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
+  m_Materials:
+  - {fileID: 2100000, guid: 0a6d9eae2010c0841ae0689699098806, type: 2}
+  - {fileID: 2100000, guid: 0d37f1ce51d36d24394f195a73fdf202, type: 2}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 0
+  m_LightProbeAnchor: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+--- !u!33 &622937553
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 3382582, guid: d901d94dfae57834198600dc30561488,
+    type: 2}
+  m_PrefabInternal: {fileID: 1949999658}
+  m_GameObject: {fileID: 622937551}
+  m_Mesh: {fileID: 4300002, guid: 5c99c909b120ba64ea477000d9b49583, type: 3}
+--- !u!4 &622937554
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 482582, guid: d901d94dfae57834198600dc30561488, type: 2}
+  m_PrefabInternal: {fileID: 1949999658}
+  m_GameObject: {fileID: 622937551}
+  m_LocalRotation: {x: 0, y: -0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 14.3650856, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 2093977653}
+  - {fileID: 750458667}
+  m_Father: {fileID: 197350130}
+  m_RootOrder: 1
 --- !u!1 &630487569
 GameObject:
   m_ObjectHideFlags: 0
@@ -4095,6 +4331,129 @@ Prefab:
   m_RootGameObject: {fileID: 1100675462}
   m_IsPrefabParent: 0
   m_IsExploded: 1
+--- !u!1 &745893049
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 182580, guid: d901d94dfae57834198600dc30561488, type: 2}
+  m_PrefabInternal: {fileID: 1949999658}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 745893050}
+  - 33: {fileID: 745893052}
+  - 23: {fileID: 745893051}
+  m_Layer: 0
+  m_Name: TrainDepot:Layer1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &745893050
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 482580, guid: d901d94dfae57834198600dc30561488, type: 2}
+  m_PrefabInternal: {fileID: 1949999658}
+  m_GameObject: {fileID: 745893049}
+  m_LocalRotation: {x: 0, y: -0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 197350130}
+  m_RootOrder: 0
+--- !u!23 &745893051
+Renderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 2382580, guid: d901d94dfae57834198600dc30561488,
+    type: 2}
+  m_PrefabInternal: {fileID: 1949999658}
+  m_GameObject: {fileID: 745893049}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_LightmapIndex: 255
+  m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
+  m_Materials:
+  - {fileID: 2100000, guid: 1032b817d41cc95438f2752222e9c1aa, type: 2}
+  - {fileID: 2100000, guid: ba48488e4843682488eb092c68517870, type: 2}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 0
+  m_LightProbeAnchor: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+--- !u!33 &745893052
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 3382580, guid: d901d94dfae57834198600dc30561488,
+    type: 2}
+  m_PrefabInternal: {fileID: 1949999658}
+  m_GameObject: {fileID: 745893049}
+  m_Mesh: {fileID: 4300000, guid: 5c99c909b120ba64ea477000d9b49583, type: 3}
+--- !u!1 &750458666
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 182594, guid: d901d94dfae57834198600dc30561488, type: 2}
+  m_PrefabInternal: {fileID: 1949999658}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 750458667}
+  - 33: {fileID: 750458669}
+  - 23: {fileID: 750458668}
+  m_Layer: 0
+  m_Name: TrainDepot:Wall
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &750458667
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 482586, guid: d901d94dfae57834198600dc30561488, type: 2}
+  m_PrefabInternal: {fileID: 1949999658}
+  m_GameObject: {fileID: 750458666}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0, y: -8.61580467, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 37535283}
+  m_Father: {fileID: 622937554}
+  m_RootOrder: 1
+--- !u!23 &750458668
+Renderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 2382594, guid: d901d94dfae57834198600dc30561488,
+    type: 2}
+  m_PrefabInternal: {fileID: 1949999658}
+  m_GameObject: {fileID: 750458666}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_LightmapIndex: 255
+  m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
+  m_Materials:
+  - {fileID: 2100000, guid: 75e0b3a5c2ba56c4abf279cd9b7fefa4, type: 2}
+  - {fileID: 2100000, guid: 9b4a6b955761827429d69f2bfa21685e, type: 2}
+  - {fileID: 2100000, guid: e1dc8ac8f9671b24289d76a0959bca01, type: 2}
+  - {fileID: 2100000, guid: 945544e9c1611f9488a3fc7de2b32add, type: 2}
+  - {fileID: 2100000, guid: 0cb56840e6a63fa4ba1b74f682d8ba5f, type: 2}
+  - {fileID: 2100000, guid: 40f9d642039c709419155904fcfe51d6, type: 2}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 0
+  m_LightProbeAnchor: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+--- !u!33 &750458669
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 3382594, guid: d901d94dfae57834198600dc30561488,
+    type: 2}
+  m_PrefabInternal: {fileID: 1949999658}
+  m_GameObject: {fileID: 750458666}
+  m_Mesh: {fileID: 4300004, guid: 5c99c909b120ba64ea477000d9b49583, type: 3}
 --- !u!1 &779978813
 GameObject:
   m_ObjectHideFlags: 0
@@ -4268,6 +4627,64 @@ Prefab:
   m_RootGameObject: {fileID: 38199643}
   m_IsPrefabParent: 0
   m_IsExploded: 1
+--- !u!1 &830659512
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 182592, guid: d901d94dfae57834198600dc30561488, type: 2}
+  m_PrefabInternal: {fileID: 1949999658}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 830659513}
+  - 33: {fileID: 830659515}
+  - 23: {fileID: 830659514}
+  m_Layer: 0
+  m_Name: TrainDepot:RearRight
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &830659513
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 482594, guid: d901d94dfae57834198600dc30561488, type: 2}
+  m_PrefabInternal: {fileID: 1949999658}
+  m_GameObject: {fileID: 830659512}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -3.4000001, y: 0, z: -5.27000046}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2093977653}
+  m_RootOrder: 3
+--- !u!23 &830659514
+Renderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 2382592, guid: d901d94dfae57834198600dc30561488,
+    type: 2}
+  m_PrefabInternal: {fileID: 1949999658}
+  m_GameObject: {fileID: 830659512}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_LightmapIndex: 255
+  m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
+  m_Materials:
+  - {fileID: 2100000, guid: e7d8e8235cff1c74e8a479cd890ad3d3, type: 2}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 0
+  m_LightProbeAnchor: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+--- !u!33 &830659515
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 3382592, guid: d901d94dfae57834198600dc30561488,
+    type: 2}
+  m_PrefabInternal: {fileID: 1949999658}
+  m_GameObject: {fileID: 830659512}
+  m_Mesh: {fileID: 4300014, guid: 5c99c909b120ba64ea477000d9b49583, type: 3}
 --- !u!1 &845765753
 GameObject:
   m_ObjectHideFlags: 0
@@ -4520,54 +4937,6 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 223461961}
   m_GameObject: {fileID: 938192510}
---- !u!1001 &946226909
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 400000, guid: a16150bf3db67774dbefe58dc2074741, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: a16150bf3db67774dbefe58dc2074741, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: a16150bf3db67774dbefe58dc2074741, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 2.45000005
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: a16150bf3db67774dbefe58dc2074741, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: a16150bf3db67774dbefe58dc2074741, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: a16150bf3db67774dbefe58dc2074741, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: a16150bf3db67774dbefe58dc2074741, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: a16150bf3db67774dbefe58dc2074741, type: 3}
-      propertyPath: m_RootOrder
-      value: 14
-      objectReference: {fileID: 0}
-    - target: {fileID: 9500000, guid: a16150bf3db67774dbefe58dc2074741, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 1b23e75b778ee7e4997ac6baed7a305b, type: 2}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: a16150bf3db67774dbefe58dc2074741, type: 3}
-  m_RootGameObject: {fileID: 263491320}
-  m_IsPrefabParent: 0
-  m_IsExploded: 1
 --- !u!1 &976759561
 GameObject:
   m_ObjectHideFlags: 0
@@ -4731,52 +5100,49 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
---- !u!1 &1080475642
+--- !u!1 &1059595427
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100016, guid: a16150bf3db67774dbefe58dc2074741, type: 3}
-  m_PrefabInternal: {fileID: 946226909}
+  m_PrefabParentObject: {fileID: 182588, guid: d901d94dfae57834198600dc30561488, type: 2}
+  m_PrefabInternal: {fileID: 1949999658}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 1080475643}
-  - 33: {fileID: 1080475645}
-  - 23: {fileID: 1080475644}
+  - 4: {fileID: 1059595428}
+  - 33: {fileID: 1059595430}
+  - 23: {fileID: 1059595429}
   m_Layer: 0
-  m_Name: TrainDepot:Roof
+  m_Name: TrainDepot:FrontRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1080475643
+--- !u!4 &1059595428
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400016, guid: a16150bf3db67774dbefe58dc2074741, type: 3}
-  m_PrefabInternal: {fileID: 946226909}
-  m_GameObject: {fileID: 1080475642}
-  m_LocalRotation: {x: 0, y: -0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 14.3650856, z: 0}
+  m_PrefabParentObject: {fileID: 482590, guid: d901d94dfae57834198600dc30561488, type: 2}
+  m_PrefabInternal: {fileID: 1949999658}
+  m_GameObject: {fileID: 1059595427}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -3.4000001, y: .850000024, z: 5.27000046}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1973805438}
-  - {fileID: 1524390410}
-  m_Father: {fileID: 263491321}
+  m_Children: []
+  m_Father: {fileID: 2093977653}
   m_RootOrder: 1
---- !u!23 &1080475644
+--- !u!23 &1059595429
 Renderer:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 2300012, guid: a16150bf3db67774dbefe58dc2074741,
-    type: 3}
-  m_PrefabInternal: {fileID: 946226909}
-  m_GameObject: {fileID: 1080475642}
+  m_PrefabParentObject: {fileID: 2382588, guid: d901d94dfae57834198600dc30561488,
+    type: 2}
+  m_PrefabInternal: {fileID: 1949999658}
+  m_GameObject: {fileID: 1059595427}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 2100000, guid: 584a54ff2585a7042a2b0f380bfabff4, type: 2}
-  - {fileID: 2100000, guid: 241723357eea593458191cb5f3dd8023, type: 2}
+  - {fileID: 2100000, guid: 7c1476f8bb8f8b14d9f7f5a3e183de58, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -4784,14 +5150,14 @@ Renderer:
   m_ScaleInLightmap: 1
   m_SortingLayerID: 0
   m_SortingOrder: 0
---- !u!33 &1080475645
+--- !u!33 &1059595430
 MeshFilter:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 3300012, guid: a16150bf3db67774dbefe58dc2074741,
-    type: 3}
-  m_PrefabInternal: {fileID: 946226909}
-  m_GameObject: {fileID: 1080475642}
-  m_Mesh: {fileID: 4300000, guid: a16150bf3db67774dbefe58dc2074741, type: 3}
+  m_PrefabParentObject: {fileID: 3382588, guid: d901d94dfae57834198600dc30561488,
+    type: 2}
+  m_PrefabInternal: {fileID: 1949999658}
+  m_GameObject: {fileID: 1059595427}
+  m_Mesh: {fileID: 4300010, guid: 5c99c909b120ba64ea477000d9b49583, type: 3}
 --- !u!1 &1091831819
 GameObject:
   m_ObjectHideFlags: 0
@@ -4987,64 +5353,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 6
---- !u!1 &1130986431
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100008, guid: a16150bf3db67774dbefe58dc2074741, type: 3}
-  m_PrefabInternal: {fileID: 946226909}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 1130986432}
-  - 33: {fileID: 1130986434}
-  - 23: {fileID: 1130986433}
-  m_Layer: 0
-  m_Name: TrainDepot:FrontRight
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1130986432
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400008, guid: a16150bf3db67774dbefe58dc2074741, type: 3}
-  m_PrefabInternal: {fileID: 946226909}
-  m_GameObject: {fileID: 1130986431}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.4000001, y: .850000024, z: 5.27000046}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1973805438}
-  m_RootOrder: 1
---- !u!23 &1130986433
-Renderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 2300004, guid: a16150bf3db67774dbefe58dc2074741,
-    type: 3}
-  m_PrefabInternal: {fileID: 946226909}
-  m_GameObject: {fileID: 1130986431}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_LightmapIndex: 255
-  m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
-  m_Materials:
-  - {fileID: 2100000, guid: b693e194b547bc7479d3e1ac298dae5f, type: 2}
-  m_SubsetIndices: 
-  m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 0
-  m_LightProbeAnchor: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
---- !u!33 &1130986434
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 3300004, guid: a16150bf3db67774dbefe58dc2074741,
-    type: 3}
-  m_PrefabInternal: {fileID: 946226909}
-  m_GameObject: {fileID: 1130986431}
-  m_Mesh: {fileID: 4300008, guid: a16150bf3db67774dbefe58dc2074741, type: 3}
 --- !u!1 &1134315206
 GameObject:
   m_ObjectHideFlags: 0
@@ -5242,33 +5550,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 397936081}
   m_GameObject: {fileID: 1207837092}
   m_Mesh: {fileID: 4300004, guid: 3a943f2706f7ca946899db4cf42a4770, type: 3}
---- !u!1 &1210460136
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100002, guid: a16150bf3db67774dbefe58dc2074741, type: 3}
-  m_PrefabInternal: {fileID: 946226909}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 1210460137}
-  m_Layer: 0
-  m_Name: TrainDepot
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1210460137
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400002, guid: a16150bf3db67774dbefe58dc2074741, type: 3}
-  m_PrefabInternal: {fileID: 946226909}
-  m_GameObject: {fileID: 1210460136}
-  m_LocalRotation: {x: 0, y: -0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 263491321}
-  m_RootOrder: 0
 --- !u!1 &1222092456
 GameObject:
   m_ObjectHideFlags: 0
@@ -5456,7 +5737,7 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 263491322}
+      - m_Target: {fileID: 0}
         m_MethodName: openFDepotDoor
         m_Mode: 1
         m_Arguments:
@@ -5471,64 +5752,6 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_IsOn: 1
---- !u!1 &1228119457
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100006, guid: a16150bf3db67774dbefe58dc2074741, type: 3}
-  m_PrefabInternal: {fileID: 946226909}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 1228119458}
-  - 33: {fileID: 1228119460}
-  - 23: {fileID: 1228119459}
-  m_Layer: 0
-  m_Name: TrainDepot:FrontLeft
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1228119458
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400006, guid: a16150bf3db67774dbefe58dc2074741, type: 3}
-  m_PrefabInternal: {fileID: 946226909}
-  m_GameObject: {fileID: 1228119457}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.4000001, y: -.169999853, z: 5.27000046}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1973805438}
-  m_RootOrder: 0
---- !u!23 &1228119459
-Renderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 2300002, guid: a16150bf3db67774dbefe58dc2074741,
-    type: 3}
-  m_PrefabInternal: {fileID: 946226909}
-  m_GameObject: {fileID: 1228119457}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_LightmapIndex: 255
-  m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
-  m_Materials:
-  - {fileID: 2100000, guid: 7c1476f8bb8f8b14d9f7f5a3e183de58, type: 2}
-  m_SubsetIndices: 
-  m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 0
-  m_LightProbeAnchor: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
---- !u!33 &1228119460
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 3300002, guid: a16150bf3db67774dbefe58dc2074741,
-    type: 3}
-  m_PrefabInternal: {fileID: 946226909}
-  m_GameObject: {fileID: 1228119457}
-  m_Mesh: {fileID: 4300010, guid: a16150bf3db67774dbefe58dc2074741, type: 3}
 --- !u!1 &1246257657
 GameObject:
   m_ObjectHideFlags: 0
@@ -6676,77 +6899,13 @@ Transform:
   m_PrefabInternal: {fileID: 397936081}
   m_GameObject: {fileID: 1508385786}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 100, z: 10.3900003}
+  m_LocalPosition: {x: 0, y: 100, z: 14.2399998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 536925698}
   - {fileID: 1922431748}
   m_Father: {fileID: 0}
-  m_RootOrder: 15
---- !u!1 &1524390409
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100018, guid: a16150bf3db67774dbefe58dc2074741, type: 3}
-  m_PrefabInternal: {fileID: 946226909}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 1524390410}
-  - 33: {fileID: 1524390412}
-  - 23: {fileID: 1524390411}
-  m_Layer: 0
-  m_Name: TrainDepot:Wall
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1524390410
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400018, guid: a16150bf3db67774dbefe58dc2074741, type: 3}
-  m_PrefabInternal: {fileID: 946226909}
-  m_GameObject: {fileID: 1524390409}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: -8.61580467, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 2027219497}
-  m_Father: {fileID: 1080475643}
-  m_RootOrder: 1
---- !u!23 &1524390411
-Renderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 2300014, guid: a16150bf3db67774dbefe58dc2074741,
-    type: 3}
-  m_PrefabInternal: {fileID: 946226909}
-  m_GameObject: {fileID: 1524390409}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_LightmapIndex: 255
-  m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
-  m_Materials:
-  - {fileID: 2100000, guid: c832e47380fabb848bae6604235a44e4, type: 2}
-  - {fileID: 2100000, guid: 4648386053b45f74db13751de5be63f2, type: 2}
-  - {fileID: 2100000, guid: 9e223a3686a2c7945a63d9aee678f7ca, type: 2}
-  - {fileID: 2100000, guid: 7c1c0d78125cc2b47981e3034df3238b, type: 2}
-  - {fileID: 2100000, guid: 3ebe643d84559924ba623a4284cedf79, type: 2}
-  - {fileID: 2100000, guid: c11df157c8d811840b866155b56e5ab9, type: 2}
-  m_SubsetIndices: 
-  m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 0
-  m_LightProbeAnchor: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
---- !u!33 &1524390412
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 3300014, guid: a16150bf3db67774dbefe58dc2074741,
-    type: 3}
-  m_PrefabInternal: {fileID: 946226909}
-  m_GameObject: {fileID: 1524390409}
-  m_Mesh: {fileID: 4300002, guid: a16150bf3db67774dbefe58dc2074741, type: 3}
+  m_RootOrder: 14
 --- !u!1 &1546098791
 GameObject:
   m_ObjectHideFlags: 0
@@ -7183,64 +7342,6 @@ Prefab:
   m_RootGameObject: {fileID: 1860721510}
   m_IsPrefabParent: 0
   m_IsExploded: 1
---- !u!1 &1625275422
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100014, guid: a16150bf3db67774dbefe58dc2074741, type: 3}
-  m_PrefabInternal: {fileID: 946226909}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 1625275423}
-  - 33: {fileID: 1625275425}
-  - 23: {fileID: 1625275424}
-  m_Layer: 0
-  m_Name: TrainDepot:RearRight
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1625275423
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400014, guid: a16150bf3db67774dbefe58dc2074741, type: 3}
-  m_PrefabInternal: {fileID: 946226909}
-  m_GameObject: {fileID: 1625275422}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.4000001, y: 0, z: -5.27000046}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1973805438}
-  m_RootOrder: 3
---- !u!23 &1625275424
-Renderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 2300010, guid: a16150bf3db67774dbefe58dc2074741,
-    type: 3}
-  m_PrefabInternal: {fileID: 946226909}
-  m_GameObject: {fileID: 1625275422}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_LightmapIndex: 255
-  m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
-  m_Materials:
-  - {fileID: 2100000, guid: 5fcf79105f068bd43883faad3eabae6d, type: 2}
-  m_SubsetIndices: 
-  m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 0
-  m_LightProbeAnchor: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
---- !u!33 &1625275425
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 3300010, guid: a16150bf3db67774dbefe58dc2074741,
-    type: 3}
-  m_PrefabInternal: {fileID: 946226909}
-  m_GameObject: {fileID: 1625275422}
-  m_Mesh: {fileID: 4300012, guid: a16150bf3db67774dbefe58dc2074741, type: 3}
 --- !u!1 &1644540859
 GameObject:
   m_ObjectHideFlags: 0
@@ -8541,6 +8642,50 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 223461961}
   m_GameObject: {fileID: 1935246894}
+--- !u!1001 &1949999658
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 482578, guid: d901d94dfae57834198600dc30561488, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 482578, guid: d901d94dfae57834198600dc30561488, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 91.2300034
+      objectReference: {fileID: 0}
+    - target: {fileID: 482578, guid: d901d94dfae57834198600dc30561488, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 482578, guid: d901d94dfae57834198600dc30561488, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 482578, guid: d901d94dfae57834198600dc30561488, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 482578, guid: d901d94dfae57834198600dc30561488, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 482578, guid: d901d94dfae57834198600dc30561488, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 482578, guid: d901d94dfae57834198600dc30561488, type: 2}
+      propertyPath: m_RootOrder
+      value: 15
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: d901d94dfae57834198600dc30561488, type: 2}
+  m_RootGameObject: {fileID: 197350129}
+  m_IsPrefabParent: 0
+  m_IsExploded: 1
 --- !u!1 &1962490407
 GameObject:
   m_ObjectHideFlags: 0
@@ -8610,64 +8755,6 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 223461961}
   m_GameObject: {fileID: 1962490407}
---- !u!1 &1972078901
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100012, guid: a16150bf3db67774dbefe58dc2074741, type: 3}
-  m_PrefabInternal: {fileID: 946226909}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 1972078902}
-  - 33: {fileID: 1972078904}
-  - 23: {fileID: 1972078903}
-  m_Layer: 0
-  m_Name: TrainDepot:RearLeft
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1972078902
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400012, guid: a16150bf3db67774dbefe58dc2074741, type: 3}
-  m_PrefabInternal: {fileID: 946226909}
-  m_GameObject: {fileID: 1972078901}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.4000001, y: .50999999, z: -5.27000046}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1973805438}
-  m_RootOrder: 2
---- !u!23 &1972078903
-Renderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 2300008, guid: a16150bf3db67774dbefe58dc2074741,
-    type: 3}
-  m_PrefabInternal: {fileID: 946226909}
-  m_GameObject: {fileID: 1972078901}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_LightmapIndex: 255
-  m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
-  m_Materials:
-  - {fileID: 2100000, guid: e7d8e8235cff1c74e8a479cd890ad3d3, type: 2}
-  m_SubsetIndices: 
-  m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 0
-  m_LightProbeAnchor: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
---- !u!33 &1972078904
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 3300008, guid: a16150bf3db67774dbefe58dc2074741,
-    type: 3}
-  m_PrefabInternal: {fileID: 946226909}
-  m_GameObject: {fileID: 1972078901}
-  m_Mesh: {fileID: 4300014, guid: a16150bf3db67774dbefe58dc2074741, type: 3}
 --- !u!1 &1973104294
 GameObject:
   m_ObjectHideFlags: 0
@@ -8732,68 +8819,6 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 223461961}
   m_GameObject: {fileID: 1973104294}
---- !u!1 &1973805437
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100010, guid: a16150bf3db67774dbefe58dc2074741, type: 3}
-  m_PrefabInternal: {fileID: 946226909}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 1973805438}
-  - 33: {fileID: 1973805440}
-  - 23: {fileID: 1973805439}
-  m_Layer: 0
-  m_Name: TrainDepot:Pillar
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1973805438
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400010, guid: a16150bf3db67774dbefe58dc2074741, type: 3}
-  m_PrefabInternal: {fileID: 946226909}
-  m_GameObject: {fileID: 1973805437}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: -8.41508579, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1228119458}
-  - {fileID: 1130986432}
-  - {fileID: 1972078902}
-  - {fileID: 1625275423}
-  m_Father: {fileID: 1080475643}
-  m_RootOrder: 0
---- !u!23 &1973805439
-Renderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 2300006, guid: a16150bf3db67774dbefe58dc2074741,
-    type: 3}
-  m_PrefabInternal: {fileID: 946226909}
-  m_GameObject: {fileID: 1973805437}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_LightmapIndex: 255
-  m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
-  m_Materials:
-  - {fileID: 2100000, guid: 9a7d727da9741f44ca849c68e8b06509, type: 2}
-  m_SubsetIndices: 
-  m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 0
-  m_LightProbeAnchor: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
---- !u!33 &1973805440
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 3300006, guid: a16150bf3db67774dbefe58dc2074741,
-    type: 3}
-  m_PrefabInternal: {fileID: 946226909}
-  m_GameObject: {fileID: 1973805437}
-  m_Mesh: {fileID: 4300006, guid: a16150bf3db67774dbefe58dc2074741, type: 3}
 --- !u!1 &2010989863
 GameObject:
   m_ObjectHideFlags: 0
@@ -8877,64 +8902,6 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 223461961}
   m_GameObject: {fileID: 2010989863}
---- !u!1 &2027219496
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100004, guid: a16150bf3db67774dbefe58dc2074741, type: 3}
-  m_PrefabInternal: {fileID: 946226909}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 2027219497}
-  - 33: {fileID: 2027219499}
-  - 23: {fileID: 2027219498}
-  m_Layer: 0
-  m_Name: TrainDepot:Door
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2027219497
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400004, guid: a16150bf3db67774dbefe58dc2074741, type: 3}
-  m_PrefabInternal: {fileID: 946226909}
-  m_GameObject: {fileID: 2027219496}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: -3.84716821, z: .26987502}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1524390410}
-  m_RootOrder: 0
---- !u!23 &2027219498
-Renderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 2300000, guid: a16150bf3db67774dbefe58dc2074741,
-    type: 3}
-  m_PrefabInternal: {fileID: 946226909}
-  m_GameObject: {fileID: 2027219496}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_LightmapIndex: 255
-  m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
-  m_Materials:
-  - {fileID: 2100000, guid: 4574f37c07d53584ebe70716881142a5, type: 2}
-  m_SubsetIndices: 
-  m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 0
-  m_LightProbeAnchor: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
---- !u!33 &2027219499
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 3300000, guid: a16150bf3db67774dbefe58dc2074741,
-    type: 3}
-  m_PrefabInternal: {fileID: 946226909}
-  m_GameObject: {fileID: 2027219496}
-  m_Mesh: {fileID: 4300004, guid: a16150bf3db67774dbefe58dc2074741, type: 3}
 --- !u!1 &2032307052
 GameObject:
   m_ObjectHideFlags: 0
@@ -9149,6 +9116,68 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
+--- !u!1 &2093977652
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 182584, guid: d901d94dfae57834198600dc30561488, type: 2}
+  m_PrefabInternal: {fileID: 1949999658}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 2093977653}
+  - 33: {fileID: 2093977655}
+  - 23: {fileID: 2093977654}
+  m_Layer: 0
+  m_Name: TrainDepot:Pillar
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2093977653
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 482584, guid: d901d94dfae57834198600dc30561488, type: 2}
+  m_PrefabInternal: {fileID: 1949999658}
+  m_GameObject: {fileID: 2093977652}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0, y: -8.41508579, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 513993375}
+  - {fileID: 1059595428}
+  - {fileID: 397100402}
+  - {fileID: 830659513}
+  m_Father: {fileID: 622937554}
+  m_RootOrder: 0
+--- !u!23 &2093977654
+Renderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 2382584, guid: d901d94dfae57834198600dc30561488,
+    type: 2}
+  m_PrefabInternal: {fileID: 1949999658}
+  m_GameObject: {fileID: 2093977652}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_LightmapIndex: 255
+  m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
+  m_Materials:
+  - {fileID: 2100000, guid: ff52568a43f928c4fb6fc14d74bacc7b, type: 2}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 0
+  m_LightProbeAnchor: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+--- !u!33 &2093977655
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 3382584, guid: d901d94dfae57834198600dc30561488,
+    type: 2}
+  m_PrefabInternal: {fileID: 1949999658}
+  m_GameObject: {fileID: 2093977652}
+  m_Mesh: {fileID: 4300008, guid: 5c99c909b120ba64ea477000d9b49583, type: 3}
 --- !u!1 &2130794828
 GameObject:
   m_ObjectHideFlags: 0
