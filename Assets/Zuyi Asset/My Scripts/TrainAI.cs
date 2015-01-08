@@ -54,6 +54,9 @@ public class TrainAI : MonoBehaviour {
     public bool         m_bWaiting  = false;
     public bool         m_bInDepot  = false;
 
+    // Reference for depot the train is in
+    private DepotAI     r_Depot;
+
     // Bool for the train to trigger the snapping when steering
     public bool         m_bSnap         = true;
     public float        m_fSnapStrength = 5;
@@ -436,6 +439,45 @@ public class TrainAI : MonoBehaviour {
     // NCA: Difference between gettrack, this does not set the next move
     int             checkTrack()
     {
+
+        // If checktrack is called inside a depot, and the door is not close, it will call the depot to close the door
+        if (m_bInDepot)
+        {
+            if (m_nNextMove == UP)
+            {
+
+                if (r_Depot.isFOpen && !r_Depot.inTransition)
+                {
+                    r_Depot.closeFDepotDoor();
+                    //m_bInDepot = false;
+                    return USED;
+                }
+                else if (r_Depot.isBOpen && !r_Depot.inTransition)
+                {
+                    r_Depot.closeBDepotDoor();                 
+                    m_bInDepot = false;
+                    return USED;
+                }
+            }
+            else if (m_nNextMove == DOWN)
+            {
+
+                if (r_Depot.isBOpen && !r_Depot.inTransition)
+                {
+                    r_Depot.closeBDepotDoor();
+                    //m_bInDepot = false;
+                    return USED;
+                }
+                else if (r_Depot.isFOpen && !r_Depot.inTransition)
+                {
+                    r_Depot.closeFDepotDoor();
+                    m_bInDepot = false;
+                    return USED;
+                }
+            }
+        }
+
+        // When it is not in the depot
         foreach (Transform child in rGrid.transform)
         {
             GridData gData = child.GetComponent<GridData>();
@@ -445,14 +487,13 @@ public class TrainAI : MonoBehaviour {
                 {
                     return USED;
                 }
-                else if (gData.isDepot)
+                else if (gData.isDepot && !gData.isOccupied)
                 {
-                    Debug.Log("Checking depot");
-
                     Transform depot = child.FindChild("Depot Created");
 
                     DepotAI dData = depot.GetComponent<DepotAI>();
 
+                    r_Depot = dData;
                     // If the train found a depot ahead, it will try to ask the depot to open the door
                     // If the door is opened, it will move into the depot and stop.
                     // This set of codes is for handling when the train found the depot ahead.
@@ -483,58 +524,44 @@ public class TrainAI : MonoBehaviour {
                                 return VALID; 
                             } 
                         }
-                    }
-                    // This part of the code will handle when the train is in the depot
-                    else if (m_bInDepot)
-                    {                      
-                        if (m_nNextMove == UP)
-                        {
-
-                            if (dData.isFOpen)
-                            {
-                                dData.closeFDepotDoor();
-                                return USED;
-                            }
-                            else if (!dData.isBOpen && !dData.inTransition)
-                            {
-                                dData.openBDepotDoor();
-                                return USED;
-                            }
-                            else if (dData.isBOpen && !dData.inTransition)
-                            {
-                                return VALID;
-                            }
-                        }
-                        else if (m_nNextMove == DOWN)
-                        {
-                            
-                            if (dData.isBOpen)
-                            {
-                                dData.closeBDepotDoor();
-                                return USED;
-                            }
-                            else if (!dData.isFOpen && !dData.inTransition)
-                            {
-                                dData.openFDepotDoor();
-                                return USED;
-                            }
-                            else if (dData.isFOpen && !dData.inTransition)
-                            {
-                                return VALID;
-                            }
-                        }
-                    }
+                    }          
                 }
                 else if (gData.isTrack && !gData.isOccupied)
                 {
                     if (gData.TrackType == Track.Vertical)
                     {
                         if (m_nNextMove == UP)
-                        { 
+                        {
+                            // Before it can go out of the depot the door must be opened
+                            if (m_bInDepot)
+                            { 
+                                if (!r_Depot.isBOpen)
+                                {
+                                    r_Depot.openBDepotDoor();
+                                    return USED;
+                                }
+                                else if (r_Depot.isBOpen && !r_Depot.inTransition)
+                                {
+                                    return VALID;
+                                } 
+                            }
                             return VALID;
                         }
                         else if (m_nNextMove == DOWN)
                         {
+                            // Before it can go out the door must be opened
+                            if (m_bInDepot)
+                            { 
+                                if (!r_Depot.isFOpen)
+                                {
+                                    r_Depot.openFDepotDoor();
+                                    return USED;
+                                }
+                                else if (r_Depot.isFOpen && !r_Depot.inTransition)
+                                {
+                                    return VALID;
+                                }
+                            }
                             return VALID;
                         }
                         return INVALID;
