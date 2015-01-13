@@ -36,8 +36,32 @@ public class InputController : MonoBehaviour {
 	private GameObject lastHitObj;
 
     public GameObject trainControl;
+    
+    private MissionControl rMissionControl;
+
+    void Start()
+    { 
+         rMissionControl = this.GetComponent<MissionControl>(); 
+    }
 
     void Update()
+    {
+        handleInputs();
+    }
+
+    // NCA: Check within clickable screen
+    bool checkWithinBounds(float mouseX, float mouseY)
+    {
+        
+        // mouse x - 200 cause of the UIs
+        if (mouseX < 0 || mouseX > Screen.width - 200 || mouseY < 0 || mouseY > Screen.height)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    void handleInputs()
     {
         // Check if the mouse is within the playable area
         if (checkWithinBounds(Input.mousePosition.x, Input.mousePosition.y))
@@ -62,15 +86,25 @@ public class InputController : MonoBehaviour {
 
                             if (temp.isBuilding && !temp.isOccupied)
                             {
-                                isBuilding = true;
-                                buildingSelected = temp.buildingType;
-                                removeObj = true;
+                                // User cannot remove any building in any other modes
+                                if (currentMode == GameMode.Casual)
+                                {
+                                    isBuilding = true;
+                                    buildingSelected = temp.buildingType;
+                                    removeObj = true;
+                                }
                             }
                             else if (temp.isTrack && !temp.isOccupied)
                             {
                                 isTrack = true;
                                 trackSelected = temp.TrackType;
                                 removeObj = true;
+
+                                // Refund of track should be done here
+                                if (currentMode == GameMode.Mission)
+                                {
+                                    rMissionControl.updateTrackUsage(trackSelected,true);
+                                }
                             }
 
                             if (removeObj)
@@ -116,7 +150,7 @@ public class InputController : MonoBehaviour {
 
                     Vector3 offset = new Vector3(0, 0, 0);
                     if (isTrain)
-                    {      
+                    {
                         Target.transform.position += offset;
                     }
                     //lastHitObj = the grid which cursor is in
@@ -138,6 +172,11 @@ public class InputController : MonoBehaviour {
                                 temp.isTrack = true;
                                 temp.TrackType = trackSelected;
                                 TargetObj.name = "Track Created";
+
+                                if (currentMode == GameMode.Mission)
+                                {
+                                    rMissionControl.updateTrackUsage(trackSelected,false);
+                                }
                             }
                             else if (isBuilding)
                             {
@@ -172,15 +211,15 @@ public class InputController : MonoBehaviour {
                             GridData temp = lastHitObj.GetComponent<GridData>();
                             // Check if the track is occuppied by another track
                             if (!temp.isOccupied && temp.TrackType == Track.Vertical)
-                            { 
+                            {
                                 //create Target (current track selected) at  lastHitObj.transform.position (center of the grid which cursor is in)
-                                GameObject TargetObj = Instantiate(Target, lastHitObj.transform.position, Quaternion.identity) as GameObject;                 
+                                GameObject TargetObj = Instantiate(Target, lastHitObj.transform.position, Quaternion.identity) as GameObject;
 
                                 // Give the gameobject a name
                                 TargetObj.name = "Steam";
 
                                 // Get the TrainAI to set the position of the train
-                                
+
                                 if (moveTrain)
                                 {
                                     TargetObj.GetComponent<TrainAI>().moveTrain();
@@ -199,7 +238,7 @@ public class InputController : MonoBehaviour {
                                 temp.isOccupied = true;
 
                                 //temporarily hide the train that is following the cursor by changing its position to be the same as the new track created
-                                Target.transform.position += new Vector3(0,100,0);
+                                Target.transform.position += new Vector3(0, 100, 0);
 
                                 // Add train to train control
                                 TargetObj.transform.parent = trainControl.transform;
@@ -227,19 +266,6 @@ public class InputController : MonoBehaviour {
 
             }
         }
-        //Debug.DrawRay(ray.origin, ray.direction * raycastLength, Color.yellow);
-    }
-
-    // NCA: Check within clickable screen
-    bool checkWithinBounds(float mouseX, float mouseY)
-    {
-        
-        // mouse x - 200 cause of the UIs
-        if (mouseX < 0 || mouseX > Screen.width - 200 || mouseY < 0 || mouseY > Screen.height)
-        {
-            return false;
-        }
-        return true;
     }
 
     // NCA: This function will hide the gameobject selected if it is not the same as the currentSelected
@@ -271,79 +297,97 @@ public class InputController : MonoBehaviour {
 	//----- FUNCTIONS FOR BUTTON PRESSED ON GUI -----
 	public void DownUpPressed()
 	{
-        if (trackSelected != Track.Vertical || !isTrack)
+        if (rMissionControl.checkTrackAvail(Track.Vertical) || currentMode != GameMode.Mission)
         {
-            hidePrevious();
-            isBuilding = false;
+            if (trackSelected != Track.Vertical || !isTrack)
+            {
+                hidePrevious();
+                isBuilding = false;
+            }
+            trackSelected = Track.Vertical;
+            isTrack = true;
+            currentlyBuilding = true;
         }
-        trackSelected = Track.Vertical;
-        isTrack = true;
-        currentlyBuilding = true;
 	}
 
 	public void LeftRightPressed()
 	{
-        if (trackSelected != Track.Horizontal || !isTrack)
+        if (rMissionControl.checkTrackAvail(Track.Horizontal) || currentMode != GameMode.Mission)
         {
-            hidePrevious();
-            isBuilding = false;
-            isTrain = false;
+            if (trackSelected != Track.Horizontal || !isTrack)
+            {
+                hidePrevious();
+                isBuilding = false;
+                isTrain = false;
+            }
+            trackSelected = Track.Horizontal;
+            isTrack = true;
+		    currentlyBuilding = true;
         }
-        trackSelected = Track.Horizontal;
-        isTrack = true;
-		currentlyBuilding = true;
 	}
 
 	public void UpLeftPressed()
 	{
-		if (trackSelected != Track.UpLeft || !isTrack)
-		{
-			hidePrevious();
-            isBuilding = false;
-            isTrain = false;
-		}
-        trackSelected = Track.UpLeft;
-        isTrack = true;
-		currentlyBuilding = true;
+        if (rMissionControl.checkTrackAvail(Track.UpLeft) || currentMode != GameMode.Mission)
+        {
+		    if (trackSelected != Track.UpLeft || !isTrack)
+		    {
+			    hidePrevious();
+                isBuilding = false;
+                isTrain = false;
+		    }
+            trackSelected = Track.UpLeft;
+            isTrack = true;
+		    currentlyBuilding = true;
+        }
 	}
 
 	public void UpRightPressed()
 	{
-        if (trackSelected != Track.UpRight || !isTrack)
+        if (rMissionControl.checkTrackAvail(Track.UpRight) || currentMode != GameMode.Mission)
         {
-            hidePrevious();
-            isBuilding = false;
-            isTrain = false;
+            if (trackSelected != Track.UpRight || !isTrack)
+            {
+                hidePrevious();
+                isBuilding = false;
+                isTrain = false;
+            }
+            trackSelected = Track.UpRight;
+            isTrack = true;
+            currentlyBuilding = true;
         }
-        trackSelected = Track.UpRight;
-        isTrack = true;
-        currentlyBuilding = true;
 	}
 
 	public void DownLeftPressed()
 	{
-        if (trackSelected != Track.DownLeft || !isTrack)
+        if (rMissionControl.checkTrackAvail(Track.DownLeft) || currentMode != GameMode.Mission)
         {
-            hidePrevious();
-            isBuilding = false;
-            isTrain = false;
+            if (trackSelected != Track.DownLeft || !isTrack)
+            {
+                hidePrevious();
+                isBuilding = false;
+                isTrain = false;
+            }
+            trackSelected = Track.DownLeft;
+            isTrack = true;
+            currentlyBuilding = true;
         }
-        trackSelected = Track.DownLeft;
-        isTrack = true;
-        currentlyBuilding = true;
 	}
 
 	public void DownRightPressed()
 	{
-        if (trackSelected != Track.DownRight || !isTrack)
+        if (rMissionControl.checkTrackAvail(Track.DownRight) || currentMode != GameMode.Mission)
         {
-            hidePrevious();
-            isBuilding = false;
-            isTrain = false;
+            if (trackSelected != Track.DownRight || !isTrack)
+            {
+                hidePrevious();
+                isBuilding = false;
+                isTrain = false;
+            }
+            trackSelected = Track.DownRight;
+            isTrack = true;
+            currentlyBuilding = true;
         }
-        trackSelected = Track.DownRight;
-        isTrack = true;
-        currentlyBuilding = true;
 	}
     // Buildings
     public void DepotPressed()
