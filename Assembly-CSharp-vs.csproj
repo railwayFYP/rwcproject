@@ -49,6 +49,9 @@
      <Compile Include="Assets\Scripts\CameraScript.cs" />
      <Compile Include="Assets\Scripts\ChangeMenu.cs" />
      <Compile Include="Assets\Scripts\Grid.cs" />
+     <Compile Include="Assets\Scripts\Mission Mode\BuildingData.cs" />
+     <Compile Include="Assets\Scripts\Mission Mode\LevelData.cs" />
+     <Compile Include="Assets\Scripts\Mission Mode\MissionControl.cs" />
      <Compile Include="Assets\Scripts\MousePoint.cs" />
      <Compile Include="Assets\Scripts\OptionsMenuScript.cs" />
      <Compile Include="Assets\Scripts\PauseMenuScript.cs" />

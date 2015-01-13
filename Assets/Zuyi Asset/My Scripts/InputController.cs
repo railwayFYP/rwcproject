@@ -4,6 +4,13 @@ using System.Collections;
 // Written by NCA
 // Raycast by Jack
 
+public enum GameMode
+{
+    Casual,
+    Mission,
+    TimeAttack
+};
+
 public class InputController : MonoBehaviour {
     // Train conrol
     private bool moveTrain = false;
@@ -15,6 +22,8 @@ public class InputController : MonoBehaviour {
     public Track trackSelected;
     public Building buildingSelected;
     public TrainType trainSelected;
+
+    public GameMode currentMode = GameMode.Casual;
 
 	public bool currentlyBuilding;
     public bool isTrack;
@@ -51,7 +60,7 @@ public class InputController : MonoBehaviour {
 
                             GridData temp = lastHitObj.GetComponent<GridData>();
 
-                            if (temp.isBuilding)
+                            if (temp.isBuilding && !temp.isOccupied)
                             {
                                 isBuilding = true;
                                 buildingSelected = temp.buildingType;
@@ -171,12 +180,20 @@ public class InputController : MonoBehaviour {
                                 TargetObj.name = "Steam";
 
                                 // Get the TrainAI to set the position of the train
-                                TargetObj.GetComponent<TrainAI>().setTrainPos(temp.posX,temp.posY);
-
+                                
                                 if (moveTrain)
                                 {
                                     TargetObj.GetComponent<TrainAI>().moveTrain();
                                 }
+
+                                if (temp.isDepot)
+                                {
+                                    Transform depot = lastHitObj.transform.FindChild("Depot Created");
+                                    TargetObj.GetComponent<TrainAI>().setDepotRef(depot.GetComponent<DepotAI>());
+                                    TargetObj.GetComponent<TrainAI>().m_bInDepot = true;
+                                }
+
+                                TargetObj.GetComponent<TrainAI>().setTrainPos(temp.posX, temp.posY);
                                 // Set the train track to be occupied so it cant be removed.
                                 // no more new train can put on the track.
                                 temp.isOccupied = true;
@@ -338,6 +355,19 @@ public class InputController : MonoBehaviour {
             isTrain = false;
         }
         buildingSelected = Building.Depot;
+        isBuilding = true;
+        currentlyBuilding = true;
+    }
+
+    public void WindmillPressed()
+    {
+        if (buildingSelected != Building.Windmill || !isBuilding)
+        {
+            hidePrevious();
+            isTrack = false;
+            isTrain = false;
+        }
+        buildingSelected = Building.Windmill;
         isBuilding = true;
         currentlyBuilding = true;
     }

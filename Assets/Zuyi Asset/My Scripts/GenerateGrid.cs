@@ -3,6 +3,8 @@ using System.Collections;
 
 public class GenerateGrid : MonoBehaviour {
 
+    public bool autoCreate = false;
+
 	// Use this for initialization
     public GameObject plain;
     public int plainX;
@@ -10,13 +12,26 @@ public class GenerateGrid : MonoBehaviour {
 
     void Start()
     {  
-    
+
+    }
+	
+	// Update is called once per frame
+	void Update () {
+        if (autoCreate)
+        {
+            createGrid(plainX,plainY);
+            autoCreate = false;
+        }
+	}
+
+    public void createGrid(int SizeX, int SizeY)
+    {
         Transform gparent = GameObject.Find("Grid").transform;
         GameObject temp;
 
-        for (int y = 0; y < plainY; y++)
+        for (int y = 0; y < SizeY; y++)
         {
-            for (int x = 0; x < plainX; x++)
+            for (int x = 0; x < SizeX; x++)
             {
                 temp = Instantiate(plain, new Vector3(x * 10, 0, y * 10), Quaternion.identity) as GameObject;
 
@@ -29,9 +44,4 @@ public class GenerateGrid : MonoBehaviour {
             }
         }
     }
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 }

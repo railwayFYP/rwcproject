@@ -26,115 +26,96 @@ public enum TrainType
 };
 
 // NCA: Train Basic AI
-public class TrainAI : MonoBehaviour {
+public class TrainAI : MonoBehaviour
+{
     // Debug use 
-    public bool         reset = false;
-    public float        facing;
+    public bool reset = false;
+    public float facing;
     // Constant For Tracks
-    const int           INVALID = 0;
-    const int           VALID   = 1;
-    const int           OUT     = 2;
-    const int           USED    = 3;
-    const int           DEPOT   = 4;
+    const int INVALID = 0;
+    const int VALID = 1;
+    const int OUT = 2;
+    const int USED = 3;
+    const int DEPOT = 4;
 
     // Constant Direction for the train movement
-    const int           UP      = 1;
-    const int           RIGHT   = 2;
-    const int           DOWN    = 3;
-    const int           LEFT    = 4;
+    const int UP = 1;
+    const int RIGHT = 2;
+    const int DOWN = 3;
+    const int LEFT = 4;
 
     // Const angle for the train to Steer toward
-    const float         STEERUP     = 0;
-    const float         STEERLEFT   = 270;
-    const float         STEERRIGHT  = 90;
-    const float         STEERDOWN   = 180;
+    const float STEERUP = 0;
+    const float STEERLEFT = 270;
+    const float STEERRIGHT = 90;
+    const float STEERDOWN = 180;
 
     // Bool for the train to move
-    public bool         m_bMove     = false;
-    public bool         m_bWaiting  = false;
-    public bool         m_bInDepot  = false;
+    public bool m_bMove = false;
+    public bool m_bWaiting = false;
+    public bool m_bInDepot = false;
+    public bool m_bGettingOut = false;
 
     // Reference for depot the train is in
-    private DepotAI     r_Depot;
+    private DepotAI r_Depot;
 
     // Bool for the train to trigger the snapping when steering
-    public bool         m_bSnap         = true;
-    public float        m_fSnapStrength = 5;
+    public bool m_bSnap = true;
+    public float m_fSnapStrength = 5;
 
     // Bool for the train to check for next track / If it is still on a track.
-    public bool         m_bNextTrack = true;
-    public bool         m_bStopOnTrack = false;
-    public int          m_nTrackData = INVALID;
+    public bool m_bNextTrack = true;
+    public bool m_bStopOnTrack = false;
+    public int m_nTrackData = INVALID;
 
     // Train Steering and movement speed
-    public float        m_fMovespeed = 0.1f;
-    public float        m_fTurnspeed = 2.0f;
+    public float m_fMovespeed = 0.1f;
+    public float m_fTurnspeed = 2.0f;
 
     // Beta Feature
     // False will make it minus from rotation and True will make it increase from rotation
-    public bool         m_bTurnFactor = false;
+    public bool m_bTurnFactor = false;
 
     // Grid data that store the x and y of the grid the train is on
-    public int          m_nCurrentGridX = 0;
-    public int          m_nCurrentGridY = 0;
+    public int m_nCurrentGridX = 0;
+    public int m_nCurrentGridY = 0;
 
     // Grid data that store the x and y of the next grid the train should move on
-    public int          m_nNextGridX = -1;
-    public int          m_nNextGridY = -1;
+    public int m_nNextGridX = -1;
+    public int m_nNextGridY = -1;
 
     // Int that store the direction of the next movement for the train
-    public int          m_nNextMove = 1;
+    public int m_nNextMove = 1;
+    public int m_nPrevMove = 1;
 
     // Vector that store the position to move to
-    private Vector3     m_vNextPos;
+    private Vector3 m_vNextPos;
 
     // Vector that store the current rotation of the train.
     // Reason: Using the Transform rotation.eulerangle will not give a correct value
-    private Vector3     m_vRotation;
+    private Vector3 m_vRotation;
 
     // Train own's animator
-    private Animator    m_anim;
+    private Animator m_anim;
 
     // Grid GameObject
-    public GameObject   rGrid;
+    public GameObject rGrid;
 
-	// Use this for initialization
-	void            Start () 
+    // Use this for initialization
+    void Start()
     {
-	    m_anim = GetComponent<Animator>();  
- 
+        m_anim = GetComponent<Animator>();
+
         //this.transform.position = new Vector3(0,8.75f,-2.5f);
 
         m_vRotation = new Vector3(0, 0, 0);
-        
+
         rGrid = GameObject.Find("Grid");
-	}
-	
-	// Update is called once per frame
-	void            Update () {
-        if (reset)
-        {
-            // Move train to Grid 0, 0
-            this.transform.position = new Vector3(0, 8.75f, -2.5f);
-            // Reset rotation
-            this.transform.rotation = Quaternion.Euler(new Vector3(0,0,0));
-            m_vRotation = new Vector3(0,0,0);
+    }
 
-            m_bMove = false;
-            m_nCurrentGridX = 0;
-            m_nCurrentGridY = 0;
-
-            m_nNextGridX = 0;
-            m_nNextGridY = 0;
-
-            m_bNextTrack = true;
-            m_nTrackData = INVALID;
-
-            m_nNextMove = UP;
-
-            reset = false;
-        }
-
+    // Update is called once per frame
+    void Update()
+    {
         if (m_bMove)
         {
             if (m_nTrackData == VALID && !m_bNextTrack && !m_bWaiting)
@@ -144,6 +125,7 @@ public class TrainAI : MonoBehaviour {
                 steer(); // Steers the train (controls the rotation)
                 this.transform.Translate(0, 0, m_fMovespeed); // Move the train forward according to it rotation (Direction)
 
+                //checkAheadBeta();
                 // moved out of current grid
                 if (!withinGrid())
                 {
@@ -153,18 +135,13 @@ public class TrainAI : MonoBehaviour {
                 {
                     // check next grid if it is a valid track
                     // Check if it destination and if there is a track
-                    if (checkTrack() == USED)
+                    if (checkTrack() != VALID)
                     {
                         //Debug.Log("Train Ahead on use, train set to wait mode");
                         m_bWaiting = true;
                     }
-                    else if (checkTrack() == OUT)
-                    {
-                        //Debug.Log("No Track Train going into wait mode");
-                        m_bWaiting = true;
-                    }
                 }
-                
+
             }
             else if (m_bWaiting)
             {
@@ -182,8 +159,6 @@ public class TrainAI : MonoBehaviour {
             {
                 // Train attempted to retreive the next track
                 m_nTrackData = getTrack();
-
-                //Debug.Log("At Get new Track:" + m_nTrackData);
 
                 // If track is valid and is not occupied, train will tag that track as occupied and untag current track
                 if (m_nTrackData == VALID)
@@ -222,19 +197,17 @@ public class TrainAI : MonoBehaviour {
                     m_bNextTrack = false;
                     m_bSnap = true;
 
-                }    
+                }
             }
-
-            // Check if it reached the outside of the grid
         }
         else
         {
             m_anim.Play("Idle");
         }
-	}
+    }
 
     // Controls the rotation of the train
-    void            steer()
+    void steer()
     {
         facing = m_vRotation.y;
 
@@ -253,14 +226,11 @@ public class TrainAI : MonoBehaviour {
                         {
                             this.transform.Rotate(new Vector3(0, -m_fTurnspeed, 0));
                             m_vRotation.y -= m_fTurnspeed;
-
-                            //Debug.Log("Rotating Left");
                         }
                         else
                         {
                             this.transform.Rotate(new Vector3(0, m_fTurnspeed, 0));
                             m_vRotation.y += m_fTurnspeed;
-                            //Debug.Log("Rotating Right");
                         }
                     }
                     break;
@@ -273,13 +243,11 @@ public class TrainAI : MonoBehaviour {
                         {
                             this.transform.Rotate(new Vector3(0, -m_fTurnspeed, 0));
                             m_vRotation.y -= m_fTurnspeed;
-                            //Debug.Log("Rotating Left");
                         }
                         else
                         {
                             this.transform.Rotate(new Vector3(0, m_fTurnspeed, 0));
                             m_vRotation.y += m_fTurnspeed;
-                            //Debug.Log("Rotating Right");
                         }
                     }
                     break;
@@ -288,18 +256,15 @@ public class TrainAI : MonoBehaviour {
                 {
                     if (facing != STEERLEFT)
                     {
-                        //Debug.Log(facing);
                         if (!m_bTurnFactor)
                         {
                             this.transform.Rotate(new Vector3(0, -m_fTurnspeed, 0));
                             m_vRotation.y -= m_fTurnspeed;
-                            // Debug.Log("Rotating Left");
                         }
                         else
                         {
                             this.transform.Rotate(new Vector3(0, m_fTurnspeed, 0));
                             m_vRotation.y += m_fTurnspeed;
-                            //Debug.Log("Rotating Right");
                         }
                     }
                     break;
@@ -312,13 +277,11 @@ public class TrainAI : MonoBehaviour {
                         {
                             this.transform.Rotate(new Vector3(0, -m_fTurnspeed, 0));
                             m_vRotation.y -= m_fTurnspeed;
-                            //Debug.Log("Rotating Left");
                         }
                         else
                         {
                             this.transform.Rotate(new Vector3(0, m_fTurnspeed, 0));
                             m_vRotation.y += m_fTurnspeed;
-                            //Debug.Log("Rotating Right");
                         }
                     }
                     break;
@@ -338,7 +301,6 @@ public class TrainAI : MonoBehaviour {
                             {
                                 this.transform.rotation = Quaternion.Euler(new Vector3(0, STEERUP, 0));
                                 m_vRotation.y = STEERUP;
-                                //Debug.Log("Snap Up");
                                 m_bSnap = false;
                             }
                         }
@@ -352,7 +314,6 @@ public class TrainAI : MonoBehaviour {
                             {
                                 this.transform.rotation = Quaternion.Euler(new Vector3(0, STEERDOWN, 0));
                                 m_vRotation.y = STEERDOWN;
-                                //Debug.Log("Snap Down");
                                 m_bSnap = false;
                             }
                         }
@@ -362,12 +323,10 @@ public class TrainAI : MonoBehaviour {
                     {
                         if (facing != STEERLEFT)
                         {
-                            //Debug.Log(Mathf.Abs(facing) - STEERLEFT);
                             if (Mathf.Abs(facing - STEERLEFT) < m_fSnapStrength)
                             {
                                 this.transform.rotation = Quaternion.Euler(new Vector3(0, STEERLEFT, 0));
                                 m_vRotation.y = STEERLEFT;
-                                //Debug.Log("Snap Left");
                                 m_bSnap = false;
                             }
                         }
@@ -381,7 +340,6 @@ public class TrainAI : MonoBehaviour {
                             {
                                 this.transform.rotation = Quaternion.Euler(new Vector3(0, STEERRIGHT, 0));
                                 m_vRotation.y = STEERRIGHT;
-                                //Debug.Log("Snap Right");
                                 m_bSnap = false;
                             }
                         }
@@ -392,16 +350,11 @@ public class TrainAI : MonoBehaviour {
         }
     }
 
-
-    // Check if train is within the checkAhead grid
-    bool            checkAhead()
+    // Check Ahead  uses Line checking than box tracking.
+    bool checkAhead()
     {
-        float checkValue = 2;
-
-        if (m_bInDepot)
-        {
-            checkValue = 0.1f;
-        }
+        //Debug.Log("Beta test called");
+        float checkValue = 0;
 
         float left = (m_nCurrentGridX * 10) - checkValue;
         float right = (m_nCurrentGridX * 10) + checkValue;
@@ -410,20 +363,100 @@ public class TrainAI : MonoBehaviour {
 
         Vector3 trainPos = this.transform.position;
 
-        if (trainPos.x > left && trainPos.x < right && trainPos.z < up && trainPos.z > down)
+        // Offset the train Z position as it starts negative
+        //trainPos.z += 10;
+
+        switch (m_nNextMove)
         {
-            return true;
+            case UP:
+                {
+                    //Debug.Log("Z = " + trainPos.z);
+                    //Debug.Log("Up = " + up);
+                    if (m_nPrevMove == LEFT || m_nPrevMove == RIGHT)
+                    {
+                        up += 1;
+                        if (trainPos.z > up && trainPos.z < up + 2)
+                        {
+                            //Debug.Log("Check top");
+                            return true;
+                        }
+                    }
+                    else if (trainPos.z > up && trainPos.z < up + 2)
+                    {
+                        //Debug.Log("Check top");
+                        return true;
+                    }
+                    break;
+                }
+
+            case DOWN:
+                {
+                    if (m_nPrevMove == LEFT || m_nPrevMove == RIGHT)
+                    {
+                        down -= 1;
+                        if (trainPos.z < down && trainPos.z > down - 2)
+                        {
+                            //Debug.Log("Check Bot");
+                            return true;
+                        }
+                    }
+                    if (trainPos.z < down && trainPos.z > down - 2)
+                    {                       
+                        //Debug.Log("Check Bot");
+                        return true;
+                    }
+                    break;
+                }
+            case LEFT:
+                {
+                    if (m_nPrevMove == UP || m_nPrevMove == DOWN)
+                    {
+                        if (trainPos.x < left && trainPos.x < left - 2)
+                        {
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        if (trainPos.x < left && trainPos.x > left - 2)
+                        {
+                            return true;
+                        }
+                    }
+                    break;
+                }
+            case RIGHT:
+                {
+                    if (m_nPrevMove == UP || m_nPrevMove == DOWN)
+                    {
+                        if (trainPos.x > right + 2 && trainPos.x < right + 4)
+                        {
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        if (trainPos.x > right && trainPos.x < right + 2)
+                        {
+                            return true;
+                        }
+                    }
+                    break;
+                }
+
+            default:
+                break;
         }
         return false;
     }
 
-    // Check if train is within the track grid
-    bool            withinGrid()
+    // Check if train is within the track grid TBC
+    bool withinGrid()
     {
-        int left    = (m_nCurrentGridX * 10) - 5;
-        int right   = (m_nCurrentGridX * 10) + 5;
-        int up      = (m_nCurrentGridY * 10) + 5;
-        int down    = (m_nCurrentGridY * 10) - 5;
+        int left = (m_nCurrentGridX * 10) - 5;
+        int right = (m_nCurrentGridX * 10) + 5;
+        int up = (m_nCurrentGridY * 10) + 5;
+        int down = (m_nCurrentGridY * 10) - 5;
 
         Vector3 trainPos = this.transform.position;
 
@@ -434,97 +467,177 @@ public class TrainAI : MonoBehaviour {
         return false;
     }
 
-    // Check if there is track ahead of the train
-    // NCA: IMPORTANT : Currently the next grid is not update so its hard to check next grid, need rearrange the logic here
-    // NCA: Difference between gettrack, this does not set the next move
-    int             checkTrack()
+    int requestFDoorOpen()
     {
-
-        // If checktrack is called inside a depot, and the door is not close, it will call the depot to close the door
+        // This function handle the opening of the front door. (Door facing the camera in game view)\
+        // If train is in depot it will check if the door is open before it leave works the same as back
         if (m_bInDepot)
+        {
+            if (!r_Depot.isFOpen)
+            {
+                r_Depot.openFDepotDoor();
+                return USED;
+            }
+            else if (r_Depot.isFOpen && !r_Depot.inTransition)
+            {
+                return VALID;
+            }
+        }
+        else
         {
             if (m_nNextMove == UP)
             {
-
-                if (r_Depot.isFOpen && !r_Depot.inTransition)
+                if (!r_Depot.isFOpen && !r_Depot.inTransition)
                 {
-                    r_Depot.closeFDepotDoor();
-                    //m_bInDepot = false;
-                    return USED;
-                }
-                else if (r_Depot.isBOpen && !r_Depot.inTransition)
-                {
-                    r_Depot.closeBDepotDoor();                 
-                    m_bInDepot = false;
-                    return USED;
-                }
-            }
-            else if (m_nNextMove == DOWN)
-            {
-
-                if (r_Depot.isBOpen && !r_Depot.inTransition)
-                {
-                    r_Depot.closeBDepotDoor();
-                    //m_bInDepot = false;
+                    // check if the door is opened. if it is not, request it to open and set the train to wait
+                    // it will not be able to request if the door is another in transition mode
+                    r_Depot.openFDepotDoor();
                     return USED;
                 }
                 else if (r_Depot.isFOpen && !r_Depot.inTransition)
                 {
-                    r_Depot.closeFDepotDoor();
-                    m_bInDepot = false;
-                    return USED;
+                    // if it is open and not in transition. 
+                    return VALID;
                 }
             }
         }
+        return INVALID;
+    }
+
+    int requestBDoorOpen()
+    {
+        // Before it can go out the door must be opened
+        if (m_bInDepot)
+        {
+            if (!r_Depot.isBOpen)
+            {
+                r_Depot.openBDepotDoor();
+                return USED;
+            }
+            else if (r_Depot.isBOpen && !r_Depot.inTransition)
+            {
+                return VALID;
+            }
+        }
+        else
+        {
+            if (m_nNextMove == DOWN)
+            {
+                if (!r_Depot.isBOpen && !r_Depot.inTransition)
+                {
+                    // check if the door is opened. if it is not, request it to open and set the train to wait
+                    // it will not be able to request if the door is another in transition mode
+                    r_Depot.openBDepotDoor();
+                    return USED;
+                }
+                else if (r_Depot.isBOpen && !r_Depot.inTransition)
+                {
+                    // if it is open and not in transition. 
+                    return VALID;
+                }
+            }           
+        }
+        return INVALID;
+    }
+
+    void requestCloseDoors()
+    {
+        if (m_bInDepot)
+        {
+            // Based on the prev move of the train. it will request the door that should be closed
+            if (m_nPrevMove == UP)
+            {
+                // Up means F doors need to be closed
+                if (r_Depot.isFOpen)
+                {
+                    r_Depot.closeFDepotDoor();
+                }      
+            }
+            else if (m_nPrevMove == DOWN)
+            {
+                // Down means B doors need to be closed
+                if (r_Depot.isBOpen)
+                {
+                    r_Depot.closeBDepotDoor();
+                }
+            }
+        }
+        else if (r_Depot != null)
+        {
+            if (m_nPrevMove == DOWN)
+            {
+                // Up means F doors need to be closed
+                if (r_Depot.isFOpen)
+                {
+                    r_Depot.closeFDepotDoor();
+                }
+            }
+            else if (m_nPrevMove == UP)
+            {
+                // Down means B doors need to be closed
+                if (r_Depot.isBOpen)
+                {
+                    r_Depot.closeBDepotDoor();
+                }
+            }
+            r_Depot = null;
+        }
+    }
+
+    // Check if there is track ahead of the train
+    // NCA: IMPORTANT : Currently the next grid is not update so its hard to check next grid, need rearrange the logic here
+    // NCA: Difference between gettrack, this does not set the next move
+    int checkTrack()
+    {
+        int result = INVALID;
+        bool depotAgain = false;
+        requestCloseDoors();
 
         // When it is not in the depot
         foreach (Transform child in rGrid.transform)
         {
             GridData gData = child.GetComponent<GridData>();
+
             if (gData.posX == m_nNextGridX && gData.posY == m_nNextGridY)
             {
+                // Checks that there is a track ahead but it is 
                 if (gData.isTrack && gData.isOccupied)
                 {
                     return USED;
                 }
-                else if (gData.isDepot && !gData.isOccupied)
+                else if (gData.isDepot)
                 {
+                    // Only controls the entry of the train. Exit will be called on another part of this
+                    // Train is 1 track away from depot. 
+                    // Returns used if door of depot is not opened based on what direction the train is facing
+                    // returns valid if the door is opened.
                     Transform depot = child.FindChild("Depot Created");
 
                     DepotAI dData = depot.GetComponent<DepotAI>();
 
                     r_Depot = dData;
-                    // If the train found a depot ahead, it will try to ask the depot to open the door
-                    // If the door is opened, it will move into the depot and stop.
-                    // This set of codes is for handling when the train found the depot ahead.
-                    if(!m_bInDepot)
+
+                    // Hack fix for chain depots
+                    if (m_bInDepot)
                     {
-                        
-                        if (m_nNextMove == UP)
-                        {
-                            if (!dData.isFOpen)
-                            {
-                                dData.openFDepotDoor();
-                                return USED;
-                            }
-                            else if (dData.isFOpen && !dData.inTransition)
-                            {
-                                return VALID;                 
-                            }
-                        }
-                        else if (m_nNextMove == DOWN)
-                        {
-                            if (!dData.isBOpen)
-                            {
-                                dData.openBDepotDoor();
-                                return USED;
-                            }
-                            else if (dData.isBOpen && !dData.inTransition)
-                            {
-                                return VALID; 
-                            } 
-                        }
-                    }          
+                        depotAgain = true;
+                        result = VALID;
+                        break;
+                    }
+
+                    result = requestBDoorOpen();
+
+                    if (result != INVALID)
+                    {
+                        break;
+                    }
+
+                    result = requestFDoorOpen();
+
+                    if (result != INVALID)
+                    {
+                        break;
+                    }
                 }
                 else if (gData.isTrack && !gData.isOccupied)
                 {
@@ -532,119 +645,104 @@ public class TrainAI : MonoBehaviour {
                     {
                         if (m_nNextMove == UP)
                         {
-                            // Before it can go out of the depot the door must be opened
-                            if (m_bInDepot)
-                            { 
-                                if (!r_Depot.isBOpen)
-                                {
-                                    r_Depot.openBDepotDoor();
-                                    return USED;
-                                }
-                                else if (r_Depot.isBOpen && !r_Depot.inTransition)
-                                {
-                                    return VALID;
-                                } 
-                            }
-                            return VALID;
+                            result = VALID;
                         }
                         else if (m_nNextMove == DOWN)
                         {
-                            // Before it can go out the door must be opened
-                            if (m_bInDepot)
-                            { 
-                                if (!r_Depot.isFOpen)
-                                {
-                                    r_Depot.openFDepotDoor();
-                                    return USED;
-                                }
-                                else if (r_Depot.isFOpen && !r_Depot.inTransition)
-                                {
-                                    return VALID;
-                                }
-                            }
-                            return VALID;
+                            result = VALID;
                         }
-                        return INVALID;
                     }
                     else if (gData.TrackType == Track.Horizontal)
                     {
                         if (m_nNextMove == LEFT)
                         {
-                            return VALID;
+                            result = VALID;
                         }
                         else if (m_nNextMove == RIGHT)
                         {
-                            return VALID;
+                            result = VALID;
                         }
-                        return INVALID;
                     }
                     else if (gData.TrackType == Track.UpRight)
                     {
                         if (m_nNextMove == DOWN)
                         {
-                            return VALID;
+                            result = VALID;
                         }
                         else if (m_nNextMove == LEFT)
                         {
-                            return VALID;
-                        }
-                        return INVALID;
+                            result = VALID;
+                        }                       
                     }
                     else if (gData.TrackType == Track.UpLeft)
                     {
                         if (m_nNextMove == DOWN)
                         {
-                            return VALID;
+                            result = VALID;
                         }
                         else if (m_nNextMove == RIGHT)
                         {
-                            return VALID;
+                            result = VALID;
                         }
-                        return INVALID;
                     }
                     else if (gData.TrackType == Track.DownRight)
                     {
                         if (m_nNextMove == LEFT)
                         {
-                            return VALID;
+                            result = VALID;
                         }
                         else if (m_nNextMove == UP)
                         {
-                            return VALID;
+                            result = VALID;
                         }
-                        return INVALID;
                     }
                     else if (gData.TrackType == Track.DownLeft)
                     {
                         if (m_nNextMove == RIGHT)
                         {
-                            return VALID;
+                            result = VALID;
                         }
                         else if (m_nNextMove == UP)
                         {
-                            return VALID;
+                            result = VALID;
                         }
-                        return INVALID;
                     }
                 }
-                return OUT;
+                break;
             }
         }
-        return OUT;
+
+        if (result == VALID && m_bInDepot && !depotAgain)
+        {
+            // Check if the door is opened
+            if (m_nPrevMove == UP)
+            {
+                result = requestBDoorOpen();
+            }
+            else if (m_nPrevMove == DOWN)
+            {
+                result = requestFDoorOpen();
+            }
+        }
+        return result;
     }
 
     // Returns VALID,INVALID,OUT in int
-    int             getTrack()
+    int getTrack()
     {
         foreach (Transform child in rGrid.transform)
         {
             GridData gData = child.GetComponent<GridData>();
             if (gData.posX == m_nNextGridX && gData.posY == m_nNextGridY)
             {
-                // If it is moving into a depot
+                // set it to be in depot once its moving into it.
                 if (gData.isDepot)
                 {
                     m_bInDepot = true;
+                }
+                else
+                {
+                    m_bInDepot = false;
                 }
 
                 if (gData.isTrack)
@@ -658,13 +756,15 @@ public class TrainAI : MonoBehaviour {
                         // Vertical track therefore 2 ways Up or Down
                         if (m_nNextMove == UP)
                         {
-                            // Steer UP         
+                            // Steer UP   
+                            m_nPrevMove = m_nNextMove;    
                             m_nNextMove = UP;
                             return VALID;
                         }
                         else if (m_nNextMove == DOWN)
                         {
                             // Steer DOWN
+                            m_nPrevMove = m_nNextMove;
                             m_nNextMove = DOWN;
                             return VALID;
                         }
@@ -678,12 +778,14 @@ public class TrainAI : MonoBehaviour {
                         if (m_nNextMove == LEFT)
                         {
                             // Steer Left
+                            m_nPrevMove = m_nNextMove;
                             m_nNextMove = LEFT;
                             return VALID;
                         }
                         else if (m_nNextMove == RIGHT)
                         {
                             // Steer Right
+                            m_nPrevMove = m_nNextMove;
                             m_nNextMove = RIGHT;
                             return VALID;
                         }
@@ -698,6 +800,7 @@ public class TrainAI : MonoBehaviour {
                         if (m_nNextMove == DOWN)
                         {
                             // Going downward so steer right
+                            m_nPrevMove = m_nNextMove;
                             m_nNextMove = RIGHT;
                             m_bTurnFactor = false;
                             return VALID;
@@ -705,6 +808,7 @@ public class TrainAI : MonoBehaviour {
                         else if (m_nNextMove == LEFT)
                         {
                             // Facing Left so steer Up
+                            m_nPrevMove = m_nNextMove;
                             m_nNextMove = UP;
                             m_bTurnFactor = true;
                             return VALID;
@@ -720,6 +824,7 @@ public class TrainAI : MonoBehaviour {
                         if (m_nNextMove == DOWN)
                         {
                             // Going downward so steer Left
+                            m_nPrevMove = m_nNextMove;
                             m_nNextMove = LEFT;
                             m_bTurnFactor = true;
                             return VALID;
@@ -727,6 +832,7 @@ public class TrainAI : MonoBehaviour {
                         else if (m_nNextMove == RIGHT)
                         {
                             // Facing Right so steer Up
+                            m_nPrevMove = m_nNextMove;
                             m_nNextMove = UP;
                             m_bTurnFactor = false;
                             return VALID;
@@ -742,6 +848,7 @@ public class TrainAI : MonoBehaviour {
                         if (m_nNextMove == LEFT)
                         {
                             // Facing Left so steer Down
+                            m_nPrevMove = m_nNextMove;
                             m_nNextMove = DOWN;
                             m_bTurnFactor = false;
                             return VALID;
@@ -749,6 +856,7 @@ public class TrainAI : MonoBehaviour {
                         else if (m_nNextMove == UP)
                         {
                             // Facing up so steer right
+                            m_nPrevMove = m_nNextMove;
                             m_nNextMove = RIGHT;
                             m_bTurnFactor = true;
                             return VALID;
@@ -764,6 +872,7 @@ public class TrainAI : MonoBehaviour {
                         if (m_nNextMove == RIGHT)
                         {
                             // Facing Right so steer Down
+                            m_nPrevMove = m_nNextMove;
                             m_nNextMove = DOWN;
                             m_bTurnFactor = true;
                             return VALID;
@@ -771,6 +880,7 @@ public class TrainAI : MonoBehaviour {
                         else if (m_nNextMove == UP)
                         {
                             // Facing up so steer Left
+                            m_nPrevMove = m_nNextMove;
                             m_nNextMove = LEFT;
                             m_bTurnFactor = false;
                             return VALID;
@@ -786,7 +896,7 @@ public class TrainAI : MonoBehaviour {
     }
 
     // Set the grid based on the train heading
-    bool            getGridPos()
+    void getGridPos()
     {
         switch (m_nNextMove)
         {
@@ -816,15 +926,19 @@ public class TrainAI : MonoBehaviour {
                 }
             default: break;
         }
-
-        return false;
     }
 
     // Set Train Position
-    public void     setTrainPos(int _gridX, int _gridY)
+    public void setTrainPos(int _gridX, int _gridY)
     {
+        float offset = 1;
+
+        if (m_bInDepot)
+        {
+            offset = 0.05f;
+        }
         // Set the train to the correct position offseted by the given value.
-        this.transform.position = new Vector3(_gridX * 10, 0, (_gridY * 10) - 1);
+        this.transform.position = new Vector3(_gridX * 10, 0, (_gridY * 10) - offset);
 
         // Set the train Grid Position
         m_nCurrentGridX = _gridX;
@@ -834,15 +948,20 @@ public class TrainAI : MonoBehaviour {
         m_nNextGridY = _gridY;
     }
 
+    public void setDepotRef(DepotAI _depot)
+    {
+        r_Depot = _depot;
+    }
+
     // Set the train facing based on an angle given
-    public void     setOrientation(float _angle)
+    public void setOrientation(float _angle)
     {
         m_vRotation = new Vector3(0, _angle, 0);
         this.transform.Rotate(new Vector3(0, _angle, 0));
     }
 
     // Button Press
-    public void     moveTrain()
+    public void moveTrain()
     {
         m_bMove = !m_bMove;
 
@@ -863,7 +982,7 @@ public class TrainAI : MonoBehaviour {
     }
 
     // Button Press
-    public void     resetTrain()
+    public void resetTrain()
     {
         reset = true;
     }

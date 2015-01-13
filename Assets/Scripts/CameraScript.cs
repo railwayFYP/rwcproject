@@ -7,7 +7,7 @@ public class CameraScript : MonoBehaviour
 
 	public  float       fPosX               = 0;            // X Distance
 	public  float       fPosY               = 40;           // Y Distance
-	public  float       fPosZ               = 0;            // Z Distance
+	public  float       fPosZ               = 0;          // Z Distance
 	public  float       fScrollDistance     = 20;           // How far the distance from the edges before the camera scrolls
 	public  float       fScrollSpeed        = 1;
 	public  bool        bUpdate             = true;         // Boolean to set if to update the camera movement or not
@@ -23,7 +23,7 @@ public class CameraScript : MonoBehaviour
 	void Start () 
     {
 		attachedCamera = camera.transform;                  // Store the camera transform
-		attachedCamera.Translate(fPosX, fPosY, fPosZ);      // Move the camera to position
+		attachedCamera.position = new Vector3(fPosX,fPosY,fPosZ);
 	}
 	
 	// UNITY: Main Update Function runs every frames
