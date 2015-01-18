@@ -30,6 +30,8 @@ public class InputController : MonoBehaviour {
     public bool isBuilding;
     public bool isTrain;
 
+    public bool paused = false;
+
 	private float raycastLength = 500;
 
 	//placement plane items
@@ -46,7 +48,10 @@ public class InputController : MonoBehaviour {
 
     void Update()
     {
-        handleInputs();
+        if (!paused)
+        {
+            handleInputs();
+        }    
     }
 
     // NCA: Check within clickable screen
@@ -84,29 +89,32 @@ public class InputController : MonoBehaviour {
 
                             GridData temp = lastHitObj.GetComponent<GridData>();
 
-                            if (temp.isBuilding && !temp.isOccupied)
+                            if (!temp.isNotRemoveable)
                             {
-                                // User cannot remove any building in any other modes
-                                if (currentMode == GameMode.Casual)
+                                if (temp.isBuilding && !temp.isOccupied)
                                 {
-                                    isBuilding = true;
-                                    buildingSelected = temp.buildingType;
+                                    // User cannot remove any building in any other modes
+                                    if (currentMode == GameMode.Casual)
+                                    {
+                                        isBuilding = true;
+                                        buildingSelected = temp.buildingType;
+                                        removeObj = true;
+                                    }
+                                }
+                                else if (temp.isTrack && !temp.isOccupied)
+                                {
+                                    isTrack = true;
+                                    trackSelected = temp.TrackType;
                                     removeObj = true;
+
+                                    // Refund of track should be done here
+                                    if (currentMode == GameMode.Mission)
+                                    {
+                                        rMissionControl.updateTrackUsage(trackSelected, true);
+                                    }
                                 }
                             }
-                            else if (temp.isTrack && !temp.isOccupied)
-                            {
-                                isTrack = true;
-                                trackSelected = temp.TrackType;
-                                removeObj = true;
-
-                                // Refund of track should be done here
-                                if (currentMode == GameMode.Mission)
-                                {
-                                    rMissionControl.updateTrackUsage(trackSelected,true);
-                                }
-                            }
-
+                            
                             if (removeObj)
                             {
                                 //destroy child of grid clicked

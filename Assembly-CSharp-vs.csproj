@@ -46,15 +46,26 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\AdjustScript.cs" />
      <Compile Include="Assets\Scripts\CameraScript.cs" />
+     <Compile Include="Assets\Scripts\CasualTutorialScript.cs" />
      <Compile Include="Assets\Scripts\ChangeMenu.cs" />
+     <Compile Include="Assets\Scripts\DialogueScript1.cs" />
+     <Compile Include="Assets\Scripts\DialogueScript2.cs" />
+     <Compile Include="Assets\Scripts\GameControl.cs" />
+     <Compile Include="Assets\Scripts\GameModeMenuScript.cs" />
      <Compile Include="Assets\Scripts\Grid.cs" />
-     <Compile Include="Assets\Scripts\Mission Mode\BuildingData.cs" />
+     <Compile Include="Assets\Scripts\MainMenuScript.cs" />
+     <Compile Include="Assets\Scripts\MainMenuSoundScript.cs" />
      <Compile Include="Assets\Scripts\Mission Mode\LevelData.cs" />
      <Compile Include="Assets\Scripts\Mission Mode\MissionControl.cs" />
+     <Compile Include="Assets\Scripts\Mission Mode\ObjData.cs" />
+     <Compile Include="Assets\Scripts\MissionModeMenuScript.cs" />
+     <Compile Include="Assets\Scripts\MissionTutorialScript.cs" />
      <Compile Include="Assets\Scripts\MousePoint.cs" />
      <Compile Include="Assets\Scripts\OptionsMenuScript.cs" />
      <Compile Include="Assets\Scripts\PauseMenuScript.cs" />
+     <Compile Include="Assets\Scripts\TimeAttackModeMenuScript.cs" />
      <Compile Include="Assets\Scripts\UpdateVolValueScript.cs" />
      <Compile Include="Assets\Zuyi Asset\My Scripts\DepotAI.cs" />
      <Compile Include="Assets\Zuyi Asset\My Scripts\GenerateGrid.cs" />

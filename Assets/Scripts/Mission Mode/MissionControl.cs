@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class MissionControl : MonoBehaviour {
     public int currentLevel = 1;
@@ -8,6 +9,7 @@ public class MissionControl : MonoBehaviour {
 
     public bool pauseGame = false;
     public bool gameCleared = false;
+    public bool gameFailed = false;
     public bool startUp = false;
 
     // Number of tracks
@@ -23,6 +25,14 @@ public class MissionControl : MonoBehaviour {
     private LevelData   levelData;
     private GameObject  rGrid;
     private GameObject  trainControl;
+
+    public GameObject rDiag1;
+    public GameObject rGUI;
+    public GameObject rCamera;
+    public GameObject rGUItext;
+
+    public GameObject rWinCanvas;
+    public GameObject rLoseCanvas;
 
 	// Use this for initialization
 	void Start () {
@@ -43,6 +53,13 @@ public class MissionControl : MonoBehaviour {
         populateGrid();
 
         loadTrackGiven();
+        
+        updateGUItext(Track.Vertical);
+        updateGUItext(Track.Horizontal);
+        updateGUItext(Track.UpLeft);
+        updateGUItext(Track.UpRight);
+        updateGUItext(Track.DownLeft);
+        updateGUItext(Track.DownRight);
 	}
 	
 	// Update is called once per frame
@@ -50,6 +67,12 @@ public class MissionControl : MonoBehaviour {
         if (startingCine)
         {
             // Starting Cinematic added here
+            if (!rDiag1.activeSelf)
+            {
+                startingCine = false;
+                rGUI.SetActive(true);
+                rCamera.GetComponent<CameraScript>().toggleCameraUpdate();
+            }   
         }
         else if (pauseGame)
         {
@@ -58,60 +81,110 @@ public class MissionControl : MonoBehaviour {
         else if (gameCleared)
         {
             // Winning Branch
+            rWinCanvas.SetActive(true);
         }
-        else
+        else if(gameFailed)
         {
-            // Game logic lies here
+            // end game -> show screen -> back to level selection
+            rLoseCanvas.SetActive(true);
         }        
 	}
 
+    // NCA: Function that will create the object on the grid
+    // Currently to create train on start grid.
     void populateGrid()
     { 
         // Change the list of building into array for easy reading
-        BuildingData[] temp = levelData.vBuildings.ToArray();
+        ObjData[] temp = levelData.vObjects.ToArray();
         for (int i = 0; i < temp.Length; i++)
         {
             foreach (Transform PlacementPlane in rGrid.transform)
             {
                 GridData gData = PlacementPlane.GetComponent<GridData>();
 
-                if (gData.posX == levelData.eGridX && gData.posY == levelData.eGridY)
-                {
-                    gData.isDestination = true;
-                }
-                else if (gData.posX == temp[i].posX && gData.posY == temp[i].posY)
+                if (gData.posX == temp[i].posX && gData.posY == temp[i].posY)
                 {
                     // Create object
-                    GameObject buildingType;
+                    GameObject buildingObj;
 
-                    buildingType = GameObject.Find(temp[i].type.ToString());
-
-                    GameObject TargetObj = Instantiate(buildingType, PlacementPlane.transform.position, Quaternion.identity) as GameObject;
-
-                    PlacementPlane.tag = "Building";
-                    gData.isBuilding = true;
-                    gData.buildingType = temp[i].type;
-
-                    TargetObj.name = "Building Created";
-
-                    // Need to do something to stop the user from moving the buildings
-                    // probably need to add in a bool in inputcontroller concerning the modes
-                    gData.isOccupied = true;
-
-                    buildingType.transform.position += new Vector3(0, 100, 0);
-
-                    //creates the obj as the child of the grid
-                    TargetObj.transform.parent = PlacementPlane.transform;
-
-                    if (temp[i].type == Building.Depot)
+                    if (temp[i].isTrack)
                     {
-                        TargetObj.name = "Depot Created";
-                        TargetObj.tag = "Track";
+                        // Track
+                        buildingObj = GameObject.Find(temp[i].trackType.ToString());
+                    }
+                    else if (temp[i].isBuilding)
+                    {
+                        // Building
+                        buildingObj = GameObject.Find(temp[i].type.ToString());
+                    }
+                    else
+                    {
+                        // Train
+                        buildingObj = GameObject.Find(temp[i].trainType.ToString());
+                    }
 
-                        gData.isDepot = true;
+                    GameObject TargetObj = Instantiate(buildingObj, PlacementPlane.transform.position, Quaternion.identity) as GameObject;
+
+                    if (temp[i].isTrack)
+                    {
+                        // Track
+                        buildingObj = GameObject.Find(temp[i].trackType.ToString());
+
+                        PlacementPlane.tag = "Track";
                         gData.isTrack = true;
-                        gData.TrackType = Track.Vertical;
+                        gData.TrackType = temp[i].trackType;
 
+                        TargetObj.name = "Track Created";
+
+                        //creates the obj as the child of the grid
+                        TargetObj.transform.parent = PlacementPlane.transform;
+
+                        gData.isNotRemoveable = true;
+                    }
+                    else if (temp[i].isBuilding)
+                    {
+                        // Building
+                        buildingObj = GameObject.Find(temp[i].type.ToString());
+
+                        PlacementPlane.tag = "Building";
+                        gData.isBuilding = true;
+                        gData.buildingType = temp[i].type;
+
+                        TargetObj.name = "Building Created";                       
+
+                        if (temp[i].type == Building.Depot)
+                        {
+                            TargetObj.name = "Depot Created";
+                            TargetObj.tag = "Track";
+
+                            gData.isDepot = true;
+                            gData.isTrack = true;
+                            gData.TrackType = Track.Vertical;
+                        }
+
+                        //creates the obj as the child of the grid
+                        TargetObj.transform.parent = PlacementPlane.transform;
+
+                        // Need to do something to stop the user from moving the buildings
+                        // probably need to add in a bool in inputcontroller concerning the modes
+                        gData.isNotRemoveable = true;
+                    }
+                    else
+                    {
+                        // Train
+                        buildingObj = GameObject.Find(temp[i].trainType.ToString());
+                    }
+
+                    buildingObj.transform.position += new Vector3(0, 100, 0);
+
+                    if (gData.posX == levelData.eGridX && gData.posY == levelData.eGridY)
+                    {
+                        gData.isDestination = true;
+                    }
+                    // If it is starting grid create a train
+                    if (gData.posX == levelData.sGridX && gData.posY == levelData.sGridY)
+                    {
+                        // Create Train
                         // Add a train here
                         GameObject TrainObj;
 
@@ -123,11 +196,7 @@ public class MissionControl : MonoBehaviour {
                         // Give the gameobject a name
                         Train.name = "Steam";
 
-                        Transform depot = PlacementPlane.FindChild("Depot Created");
-                        Train.GetComponent<TrainAI>().setDepotRef(depot.GetComponent<DepotAI>());
-                        Train.GetComponent<TrainAI>().m_bInDepot = true;
-
-                        Train.GetComponent<TrainAI>().setTrainPos(gData.posX,gData.posY);
+                        Train.GetComponent<TrainAI>().setTrainPos(gData.posX, gData.posY);
 
                         //temporarily hide the train that is following the cursor by changing its position to be the same as the new track created
                         TrainObj.transform.position += new Vector3(0, 100, 0);
@@ -294,6 +363,61 @@ public class MissionControl : MonoBehaviour {
                     break;
                 }
         }
+
+        updateGUItext(_type);
     }
 
+    public void updateGUItext(Track _type)
+    {
+        switch (_type)
+        {
+            case Track.Vertical:
+                {
+                    rGUItext.transform.FindChild("Vertical Available").GetComponent<Text>().text = VertTrack.ToString() + " Vertical Track" ;
+                    break;
+                }
+            case Track.Horizontal:
+                {
+                    rGUItext.transform.FindChild("Horizontal Available").GetComponent<Text>().text = HoriTrack.ToString() + " Horizontal Track";
+                    break;
+                }
+            case Track.UpLeft:
+                {
+                    rGUItext.transform.FindChild("Up Left Available").GetComponent<Text>().text = ULTrack.ToString() + " Up Left Track";
+                    break;
+                }
+            case Track.UpRight:
+                {
+                    rGUItext.transform.FindChild("Up Right Available").GetComponent<Text>().text = URTrack.ToString() + " Up Right Track";
+                    break;
+                }
+            case Track.DownLeft:
+                {
+                    rGUItext.transform.FindChild("Down Left Available").GetComponent<Text>().text = DLTrack.ToString() + " Down Left Track";
+                    break;
+                }
+            case Track.DownRight:
+                {
+                    rGUItext.transform.FindChild("Down Right Available").GetComponent<Text>().text = DRTrack.ToString() + " Down Right Track";
+                    break;
+                }
+            default:
+                {
+                    break;
+                }
+        }
+    }
+
+    public void setWin()
+    {
+        gameCleared = true;
+    }
+
+    public void setLose()
+    {
+        if (!gameCleared)
+        {
+            gameFailed = true;
+        }
+    }
 }

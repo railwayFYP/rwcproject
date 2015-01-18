@@ -16,7 +16,7 @@ public class LevelData : MonoBehaviour {
 
     // Position for train to start
     public int sGridX = 0;
-    public int sGrixY = 0;
+    public int sGridY = 0;
 
     // Position for track to reach
     public int eGridX = 0;
@@ -26,7 +26,7 @@ public class LevelData : MonoBehaviour {
     public int mSizeX = 5;
     public int mSizeY = 5;
 
-    public List<BuildingData> vBuildings = new List<BuildingData>();
+    public List<ObjData> vObjects = new List<ObjData>();
 
     public void loadGameLevel(int _level)
     {
@@ -42,7 +42,7 @@ public class LevelData : MonoBehaviour {
                     DLTrack   = 1;
 
                     sGridX = 1;
-                    sGrixY = 0;
+                    sGridY = 0;
 
                     eGridX = 4;
                     eGridY = 4;
@@ -50,43 +50,201 @@ public class LevelData : MonoBehaviour {
                     mSizeX = 5;
                     mSizeY = 5;
 
-                    BuildingData temp = new BuildingData();
+                    ObjData temp = new ObjData();
 
                     temp.type = Building.Windmill;
                     temp.posX = 4;
                     temp.posY = 0;
+                    temp.isBuilding = true;
 
-                    vBuildings.Add(temp);
+                    vObjects.Add(temp);
 
-                    temp = new BuildingData();
+                    temp = new ObjData();
 
                     temp.type = Building.Windmill;
                     temp.posX = 0;
                     temp.posY = 2;
+                    temp.isBuilding = true;
 
-                    vBuildings.Add(temp);
+                    vObjects.Add(temp);
 
-                    temp = new BuildingData();
+                    temp = new ObjData();
                     temp.type = Building.Windmill;
                     temp.posX = 3;
                     temp.posY = 3;
+                    temp.isBuilding = true;
 
-                    vBuildings.Add(temp);
+                    vObjects.Add(temp);
 
-                    temp = new BuildingData();
-                    temp.type = Building.Depot;
+                    temp = new ObjData();
+                    temp.trackType = Track.Horizontal;
+                    temp.posX = eGridX;
+                    temp.posY = eGridY;
+                    temp.isTrack = true;
+
+                    vObjects.Add(temp);
+
+                    temp = new ObjData();
+                    temp.trackType = Track.Vertical;
                     temp.posX = sGridX;
-                    temp.posY = sGrixY;
+                    temp.posY = sGridY;
+                    temp.isTrack = true;
 
-                    vBuildings.Add(temp);
+                    vObjects.Add(temp);
                     break;
                 }
             case 2:
                 {
+                    VertTrack = 2;
+                    HoriTrack = 3;
+                    URTrack = 2;
+                    ULTrack = 1;
+                    DRTrack = 1;
+                    DLTrack = 2;
+
+                    sGridX = 3;
+                    sGridY = 0;
+
+                    eGridX = 1;
+                    eGridY = 6;
+
+                    mSizeX = 7;
+                    mSizeY = 7;
+
+                    ObjData temp = new ObjData();
+
+                    temp.type = Building.Windmill;
+                    temp.posX = 1;
+                    temp.posY = 1;
+                    temp.isBuilding = true;
+
+                    vObjects.Add(temp);
+
+                    temp = new ObjData();
+
+                    temp.type = Building.Windmill;
+                    temp.posX = 4;
+                    temp.posY = 2;
+                    temp.isBuilding = true;
+
+                    vObjects.Add(temp);
+
+                    temp = new ObjData();
+                    temp.type = Building.Windmill;
+                    temp.posX = 2;
+                    temp.posY = 3;
+                    temp.isBuilding = true;
+
+                    vObjects.Add(temp);
+
+                    temp = new ObjData();
+                    temp.type = Building.Windmill;
+                    temp.posX = 0;
+                    temp.posY = 4;
+                    temp.isBuilding = true;
+
+                    vObjects.Add(temp);
+
+                    temp = new ObjData();
+                    temp.type = Building.Windmill;
+                    temp.posX = 4;
+                    temp.posY = 4;
+                    temp.isBuilding = true;
+
+                    vObjects.Add(temp);
+
+                    temp = new ObjData();
+                    temp.type = Building.Depot;
+                    temp.posX = eGridX;
+                    temp.posY = eGridY;
+                    temp.isBuilding = true;
+
+                    vObjects.Add(temp);
+
+                    temp = new ObjData();
+                    temp.trackType = Track.Vertical;
+                    temp.posX = sGridX;
+                    temp.posY = sGridY;
+                    temp.isTrack = true;
+
+                    vObjects.Add(temp);
                     break;
                 }
             case 3:
                 {
+                    VertTrack = 3;
+                    HoriTrack = 3;
+                    URTrack = 3;
+                    ULTrack = 1;
+                    DRTrack = 1;
+                    DLTrack = 3;
+
+                    sGridX = 3;
+                    sGridY = 0;
+
+                    eGridX = 1;
+                    eGridY = 6;
+
+                    mSizeX = 7;
+                    mSizeY = 7;
+
+                    ObjData temp = new ObjData();
+
+                    temp.type = Building.Windmill;
+                    temp.posX = 1;
+                    temp.posY = 1;
+                    temp.isBuilding = true;
+
+                    vObjects.Add(temp);
+
+                    temp = new ObjData();
+
+                    temp.type = Building.Windmill;
+                    temp.posX = 4;
+                    temp.posY = 2;
+                    temp.isBuilding = true;
+
+                    vObjects.Add(temp);
+
+                    temp = new ObjData();
+                    temp.type = Building.Windmill;
+                    temp.posX = 2;
+                    temp.posY = 3;
+                    temp.isBuilding = true;
+
+                    vObjects.Add(temp);
+
+                    temp = new ObjData();
+                    temp.type = Building.Windmill;
+                    temp.posX = 0;
+                    temp.posY = 4;
+                    temp.isBuilding = true;
+
+                    vObjects.Add(temp);
+
+                    temp = new ObjData();
+                    temp.type = Building.Windmill;
+                    temp.posX = 4;
+                    temp.posY = 4;
+                    temp.isBuilding = true;
+
+                    vObjects.Add(temp);
+
+                    temp = new ObjData();
+                    temp.type = Building.Depot;
+                    temp.posX = eGridX;
+                    temp.posY = eGridY;
+                    temp.isBuilding = true;
+
+                    vObjects.Add(temp);
+
+                    temp = new ObjData();
+                    temp.trackType = Track.Vertical;
+                    temp.posX = sGridX;
+                    temp.posY = sGridY;
+                    temp.isTrack = true;
+
+                    vObjects.Add(temp);
                     break;
                 }
         }

@@ -10,7 +10,7 @@ public class CameraScript : MonoBehaviour
 	public  float       fPosZ               = 0;          // Z Distance
 	public  float       fScrollDistance     = 20;           // How far the distance from the edges before the camera scrolls
 	public  float       fScrollSpeed        = 1;
-	public  bool        bUpdate             = true;         // Boolean to set if to update the camera movement or not
+	public  bool        bUpdate             = false;         // Boolean to set if to update the camera movement or not
 
     public  bool        bScrollHori         = false;        // Boolean for Scrolling true = scroll false = no scroll
     public  bool        bScrollVert         = false;        // Boolean for Scrolling true = scroll false = no scroll
@@ -113,4 +113,9 @@ public class CameraScript : MonoBehaviour
 
         return bScroll;
 	}
+
+    public void toggleCameraUpdate()
+    {
+        bUpdate = !bUpdate;
+    }
 }

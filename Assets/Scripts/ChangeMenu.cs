@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class ChangeMenu : MonoBehaviour 
 {
@@ -9,6 +10,10 @@ public class ChangeMenu : MonoBehaviour
 	public bool tracksEnabled = false;
 	public bool buildingsEnabled = false;
 	public bool objectsEnabled = false;
+
+	public bool currentlyPlaying = false;
+	public Button playButton;
+	public Sprite newSprite;
 
 	public void trainsButtonPressed (GameObject trainsCanvas)
 	{
@@ -66,13 +71,13 @@ public class ChangeMenu : MonoBehaviour
 			objectsEnabled = false;
 		}
 	}
-
+	
 	public void tracksButtonPressed (GameObject tracksCanvas)
 	{
 		if (trainsEnabled) 
 		{
 			GameObject trainsCanvas = GameObject.Find ("Trains Canvas");
-
+			
 			foreach (Transform child in trainsCanvas.transform)
 			{
 				child.gameObject.SetActive(false);
@@ -82,11 +87,11 @@ public class ChangeMenu : MonoBehaviour
 			{
 				child.gameObject.SetActive(true);
 			}
-
+			
 			tracksEnabled = true;
 			trainsEnabled = false;
 		}
-
+		
 		else if (buildingsEnabled) 
 		{
 			GameObject buildingsCanvas = GameObject.Find ("Buildings Canvas");
@@ -100,11 +105,11 @@ public class ChangeMenu : MonoBehaviour
 			{
 				child.gameObject.SetActive(true);
 			}
-
+			
 			tracksEnabled = true;
 			buildingsEnabled = false;
 		}
-
+		
 		else if (objectsEnabled) 
 		{
 			GameObject miscsCanvas = GameObject.Find ("Objects Canvas");
@@ -123,7 +128,7 @@ public class ChangeMenu : MonoBehaviour
 			objectsEnabled = false;
 		}
 	}
-
+	
 	public void buildingsButtonPressed (GameObject buildingsCanvas)
 	{
 		if (trainsEnabled) 
@@ -180,7 +185,7 @@ public class ChangeMenu : MonoBehaviour
 			objectsEnabled = false;
 		}
 	}
-
+	
 	public void objectsButtonPressed (GameObject objectsCanvas)
 	{
 		if (trainsEnabled) 
@@ -235,6 +240,22 @@ public class ChangeMenu : MonoBehaviour
 			
 			objectsEnabled = true;
 			buildingsEnabled = false;
+		}
+	}
+	
+	public void playButtonPressed ()
+	{
+		playButton = GameObject.Find ("Play Button").GetComponent<Button>();
+
+		if (currentlyPlaying == false)
+		{
+			currentlyPlaying = true;
+			playButton.image.overrideSprite = newSprite;
+		}
+		else if (currentlyPlaying == true)
+		{
+			currentlyPlaying = false;
+			playButton.image.overrideSprite = null;
 		}
 	}
 }

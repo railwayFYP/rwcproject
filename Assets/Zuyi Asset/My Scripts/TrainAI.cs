@@ -138,6 +138,7 @@ public class TrainAI : MonoBehaviour
                     if (checkTrack() != VALID)
                     {
                         //Debug.Log("Train Ahead on use, train set to wait mode");
+                        GameObject.Find("Controllers").GetComponent<MissionControl>().setLose();
                         m_bWaiting = true;
                     }
                 }
@@ -598,6 +599,10 @@ public class TrainAI : MonoBehaviour
         {
             GridData gData = child.GetComponent<GridData>();
 
+            if (gData.posX == m_nCurrentGridX && gData.posY == m_nCurrentGridY && gData.isDestination)
+            {
+                GameObject.Find("Controllers").GetComponent<MissionControl>().setWin();
+            }
             if (gData.posX == m_nNextGridX && gData.posY == m_nNextGridY)
             {
                 // Checks that there is a track ahead but it is 
