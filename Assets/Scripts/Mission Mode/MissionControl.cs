@@ -34,12 +34,17 @@ public class MissionControl : MonoBehaviour {
     public GameObject rWinCanvas;
     public GameObject rLoseCanvas;
 
+    public GameObject r_5xTerrain;
+    public GameObject r_7xTerrain;
+    public GameObject r_9xTerrain;
+    public GameObject r_10xTerrain;
+
 	// Use this for initialization
 	void Start () {
         // This will call the loading for the all requirement for the level given.
         // everything will be loaded on the spot. Once it is done, it will move into dialogue screen.
         levelData = new LevelData();
-        levelData.loadGameLevel(1);
+        levelData.loadGameLevel(currentLevel);
 
         // Find the gameobject for Grid
 
@@ -54,6 +59,10 @@ public class MissionControl : MonoBehaviour {
 
         loadTrackGiven();
         
+        generateTerrian();
+
+        prepareCamera();
+
         updateGUItext(Track.Vertical);
         updateGUItext(Track.Horizontal);
         updateGUItext(Track.UpLeft);
@@ -161,7 +170,10 @@ public class MissionControl : MonoBehaviour {
                             gData.isTrack = true;
                             gData.TrackType = Track.Vertical;
                         }
-
+                        if (temp[i].type == Building.Windmill || temp[i].type == Building.Windmill2)
+                        {
+                            TargetObj.transform.Rotate(0,180,0);
+                        }
                         //creates the obj as the child of the grid
                         TargetObj.transform.parent = PlacementPlane.transform;
 
@@ -188,13 +200,13 @@ public class MissionControl : MonoBehaviour {
                         // Add a train here
                         GameObject TrainObj;
 
-                        TrainObj = GameObject.Find("Steam");
+                        TrainObj = GameObject.Find("Electric");
 
                         //create Target (current track selected) at  lastHitObj.transform.position (center of the grid which cursor is in)
                         GameObject Train = Instantiate(TrainObj, PlacementPlane.transform.position, Quaternion.identity) as GameObject;
 
                         // Give the gameobject a name
-                        Train.name = "Steam";
+                        Train.name = "Diesel";
 
                         Train.GetComponent<TrainAI>().setTrainPos(gData.posX, gData.posY);
 
@@ -217,6 +229,67 @@ public class MissionControl : MonoBehaviour {
         ULTrack     = levelData.ULTrack;
         DRTrack     = levelData.DRTrack;
         DLTrack     = levelData.DLTrack;
+    }
+
+    void generateTerrian()
+    {
+        // x = width y = height z = length
+        //Debug.Log(r_terrian.GetComponent<Terrain>().terrainData.size.x);
+        //Debug.Log(r_terrian.GetComponent<Terrain>().terrainData.size.y);
+        //Debug.Log(r_terrian.GetComponent<Terrain>().terrainData.size.z);
+        switch (currentLevel)
+        {
+            case 1:
+                {
+                   // r_terrian.GetComponent<Terrain>().transform
+                    // .size = new Vector3(80,400,80);
+                    r_5xTerrain.SetActive(true);
+                    r_5xTerrain.transform.Translate(-19.2f, -0.1f, -5.2f);
+                    //r_terrian;
+                    break;
+                }
+            case 2:
+                {
+                    //r_terrian.GetComponent<Terrain>().terrainData.size.Set(115, 400, 105);
+                    r_7xTerrain.SetActive(true);
+                    r_7xTerrain.transform.Translate(-26.7f, -0.1f, -4.9f);
+                    //r_terrian.transform.
+                    break;
+                }
+            case 3:
+                {
+                    r_9xTerrain.SetActive(true);
+                    r_9xTerrain.transform.Translate(-21.1f, -0.1f, -4.9f);
+                    //r_terrian.transform.Translate(-38.9f, -0.1f, -5.2f);
+                    break;
+                }
+            default:
+                {
+                    break;
+                }
+        }
+    }
+
+    void prepareCamera()
+    {        
+        switch (currentLevel)
+        {
+            case 1:
+                {
+                    GameObject.Find("Main Camera").GetComponent<CameraScript>().setCameraBound(11.5f, -14.5f, 12, 50);
+                    break;
+                }
+            case 2:
+                {
+                    GameObject.Find("Main Camera").GetComponent<CameraScript>().setCameraBound(10.5f, -14.5f, 20, 56);
+                    break;
+                }
+            case 3:
+                {
+                    GameObject.Find("Main Camera").GetComponent<CameraScript>().setCameraBound(12.5f, -14.5f, 27, 80);
+                    break;
+                }
+        }
     }
 
     // Input controller will call this function to check if the track is avail before allowing player 

@@ -17,6 +17,13 @@ public class InputController : MonoBehaviour {
 
 	RaycastHit hit;
 
+    // For showing grid
+    public bool showGrid = false;
+    public bool inToggle = false;
+
+    public Texture grassG;
+    public Texture grass;
+
 	public string currentItemSelected;
 
     public Track trackSelected;
@@ -154,7 +161,7 @@ public class InputController : MonoBehaviour {
                     }
 
                     //position of Target (current track selected) follows the position of hit.point (mouse cursor)
-                    Target.transform.position = hit.point;
+                    Target.transform.position = new Vector3(hit.transform.GetComponent<GridData>().posX * 10,0,hit.transform.GetComponent<GridData>().posY * 10);
 
                     Vector3 offset = new Vector3(0, 0, 0);
                     if (isTrain)
@@ -444,6 +451,33 @@ public class InputController : MonoBehaviour {
          foreach (Transform child in trainControl.transform)
         {
             child.GetComponent<TrainAI>().moveTrain();
+        }
+    }
+
+    public void toggleGrid()
+    {
+        showGrid = !showGrid;
+
+        // Do something to the materials
+        if (!inToggle)
+        {
+            inToggle = true;
+
+            GameObject rGrid = GameObject.Find("Grid");
+
+            foreach (Transform PlacementPlane in rGrid.transform)
+            {
+                if (showGrid)
+                {
+                    PlacementPlane.GetComponent<Renderer>().material.mainTexture = grassG;
+                }
+                else
+                {
+                    PlacementPlane.GetComponent<Renderer>().material.mainTexture = grass;
+                }
+            }
+
+            inToggle = false;
         }
     }
 }

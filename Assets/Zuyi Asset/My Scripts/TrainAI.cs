@@ -135,10 +135,16 @@ public class TrainAI : MonoBehaviour
                 {
                     // check next grid if it is a valid track
                     // Check if it destination and if there is a track
-                    if (checkTrack() != VALID)
+                    int checkCond = checkTrack();
+
+                    if (checkCond == OUT)
                     {
                         //Debug.Log("Train Ahead on use, train set to wait mode");
                         GameObject.Find("Controllers").GetComponent<MissionControl>().setLose();
+                        m_bWaiting = true;                   
+                    }
+                    else if (checkCond != VALID)
+                    {
                         m_bWaiting = true;
                     }
                 }
@@ -477,6 +483,7 @@ public class TrainAI : MonoBehaviour
             if (!r_Depot.isFOpen)
             {
                 r_Depot.openFDepotDoor();
+
                 return USED;
             }
             else if (r_Depot.isFOpen && !r_Depot.inTransition)
@@ -502,6 +509,7 @@ public class TrainAI : MonoBehaviour
                 }
             }
         }
+        // Changed from invalid to test
         return INVALID;
     }
 
@@ -590,7 +598,7 @@ public class TrainAI : MonoBehaviour
     // NCA: Difference between gettrack, this does not set the next move
     int checkTrack()
     {
-        int result = INVALID;
+        int result = OUT;
         bool depotAgain = false;
         requestCloseDoors();
 

@@ -5,7 +5,9 @@ using System.Collections;
 public enum Building
 {
 	Depot,
-	Windmill
+	Windmill,
+    Windmill2,
+    Mountain
 };
 
 public enum Track

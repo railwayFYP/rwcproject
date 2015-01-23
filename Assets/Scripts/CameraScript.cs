@@ -12,6 +12,12 @@ public class CameraScript : MonoBehaviour
 	public  float       fScrollSpeed        = 1;
 	public  bool        bUpdate             = false;         // Boolean to set if to update the camera movement or not
 
+    // Camera Boundaries
+    public float top = 0;
+    public float bot = 0;
+    public float left = 0;
+    public float right = 0;
+
     public  bool        bScrollHori         = false;        // Boolean for Scrolling true = scroll false = no scroll
     public  bool        bScrollVert         = false;        // Boolean for Scrolling true = scroll false = no scroll
     public  bool        bScrollUp           = false;        // Boolean for directional true = up false = down
@@ -42,11 +48,19 @@ public class CameraScript : MonoBehaviour
                 {
                     if (bScrollUp)
                     {
-                        attachedCamera.Translate(0, 0, -fScrollSpeed,Space.World);
+                        // Scrolling down
+                        if (attachedCamera.position.z > bot)
+                        {
+                            attachedCamera.Translate(0, 0, -fScrollSpeed, Space.World);
+                        }             
                     }
                     else
                     {
-                        attachedCamera.Translate(0, 0, fScrollSpeed, Space.World);
+                        // Scrolling up
+                        if (attachedCamera.position.z < top)
+                        {
+                            attachedCamera.Translate(0, 0, fScrollSpeed, Space.World);
+                        }
                     }
                 }
 
@@ -54,11 +68,17 @@ public class CameraScript : MonoBehaviour
                 {
                     if (bScrollLeft)
                     {
-                        attachedCamera.Translate(-fScrollSpeed, 0, 0, Space.World);
+                        if (attachedCamera.position.x > left)
+                        {
+                            attachedCamera.Translate(-fScrollSpeed, 0, 0, Space.World);
+                        }
                     }
                     else
                     {
-                        attachedCamera.Translate(fScrollSpeed, 0, 0, Space.World);
+                        if (attachedCamera.position.x < right)
+                        {
+                            attachedCamera.Translate(fScrollSpeed, 0, 0, Space.World);
+                        }
                     }
                 }
             }
@@ -113,6 +133,14 @@ public class CameraScript : MonoBehaviour
 
         return bScroll;
 	}
+
+    public void setCameraBound(float _top, float _bot, float _left, float _right)
+    {
+        top = _top;
+        bot = _bot;
+        left = _left;
+        right = _right;
+    }
 
     public void toggleCameraUpdate()
     {

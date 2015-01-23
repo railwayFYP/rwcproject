@@ -113,8 +113,8 @@ public class LevelData : MonoBehaviour {
 
                     ObjData temp = new ObjData();
 
-                    temp.type = Building.Windmill;
-                    temp.posX = 1;
+                    temp.type = Building.Windmill2;
+                    temp.posX = 2;
                     temp.posY = 1;
                     temp.isBuilding = true;
 
@@ -130,7 +130,7 @@ public class LevelData : MonoBehaviour {
                     vObjects.Add(temp);
 
                     temp = new ObjData();
-                    temp.type = Building.Windmill;
+                    temp.type = Building.Windmill2;
                     temp.posX = 2;
                     temp.posY = 3;
                     temp.isBuilding = true;
@@ -138,7 +138,7 @@ public class LevelData : MonoBehaviour {
                     vObjects.Add(temp);
 
                     temp = new ObjData();
-                    temp.type = Building.Windmill;
+                    temp.type = Building.Mountain;
                     temp.posX = 0;
                     temp.posY = 4;
                     temp.isBuilding = true;
@@ -172,27 +172,27 @@ public class LevelData : MonoBehaviour {
                 }
             case 3:
                 {
-                    VertTrack = 3;
+                    VertTrack = 2;
                     HoriTrack = 3;
                     URTrack = 3;
                     ULTrack = 1;
                     DRTrack = 1;
-                    DLTrack = 3;
+                    DLTrack = 4;
 
-                    sGridX = 3;
+                    sGridX = 6;
                     sGridY = 0;
 
-                    eGridX = 1;
+                    eGridX = 0;
                     eGridY = 6;
 
-                    mSizeX = 7;
-                    mSizeY = 7;
+                    mSizeX = 9;
+                    mSizeY = 9;
 
                     ObjData temp = new ObjData();
 
                     temp.type = Building.Windmill;
-                    temp.posX = 1;
-                    temp.posY = 1;
+                    temp.posX = 2;
+                    temp.posY = 0;
                     temp.isBuilding = true;
 
                     vObjects.Add(temp);
@@ -200,7 +200,7 @@ public class LevelData : MonoBehaviour {
                     temp = new ObjData();
 
                     temp.type = Building.Windmill;
-                    temp.posX = 4;
+                    temp.posX = 1;
                     temp.posY = 2;
                     temp.isBuilding = true;
 
@@ -208,16 +208,16 @@ public class LevelData : MonoBehaviour {
 
                     temp = new ObjData();
                     temp.type = Building.Windmill;
-                    temp.posX = 2;
-                    temp.posY = 3;
+                    temp.posX = 6;
+                    temp.posY = 2;
                     temp.isBuilding = true;
 
                     vObjects.Add(temp);
 
                     temp = new ObjData();
                     temp.type = Building.Windmill;
-                    temp.posX = 0;
-                    temp.posY = 4;
+                    temp.posX = 3;
+                    temp.posY = 3;
                     temp.isBuilding = true;
 
                     vObjects.Add(temp);
@@ -231,10 +231,42 @@ public class LevelData : MonoBehaviour {
                     vObjects.Add(temp);
 
                     temp = new ObjData();
-                    temp.type = Building.Depot;
+                    temp.type = Building.Windmill;
+                    temp.posX = 8;
+                    temp.posY = 4;
+                    temp.isBuilding = true;
+
+                    vObjects.Add(temp);
+
+                    temp = new ObjData();
+                    temp.type = Building.Windmill;
+                    temp.posX = 0;
+                    temp.posY = 5;
+                    temp.isBuilding = true;
+
+                    vObjects.Add(temp);
+
+                    temp = new ObjData();
+                    temp.type = Building.Windmill;
+                    temp.posX = 2;
+                    temp.posY = 8;
+                    temp.isBuilding = true;
+
+                    vObjects.Add(temp);
+
+                    temp = new ObjData();
+                    temp.type = Building.Windmill;
+                    temp.posX = 8;
+                    temp.posY = 8;
+                    temp.isBuilding = true;
+
+                    vObjects.Add(temp);
+
+                    temp = new ObjData();
+                    temp.trackType = Track.Horizontal;
                     temp.posX = eGridX;
                     temp.posY = eGridY;
-                    temp.isBuilding = true;
+                    temp.isTrack = true;
 
                     vObjects.Add(temp);
 
