@@ -163,11 +163,14 @@ public class InputController : MonoBehaviour {
                     //position of Target (current track selected) follows the position of hit.point (mouse cursor)
                     Target.transform.position = new Vector3(hit.transform.GetComponent<GridData>().posX * 10,0,hit.transform.GetComponent<GridData>().posY * 10);
 
+                    
+
                     Vector3 offset = new Vector3(0, 0, 0);
                     if (isTrain)
                     {
                         Target.transform.position += offset;
                     }
+
                     //lastHitObj = the grid which cursor is in
                     lastHitObj = hit.collider.gameObject;
 
@@ -207,6 +210,10 @@ public class InputController : MonoBehaviour {
                                     temp.isTrack = true;
                                     temp.TrackType = Track.Vertical;
                                     TargetObj.name = "Depot Created";
+                                }
+                                if (buildingSelected == Building.Windmill2 || buildingSelected == Building.Windmill)
+                                {
+                                    TargetObj.transform.Rotate(0, 180, 0);
                                 }
                             }
 

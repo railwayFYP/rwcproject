@@ -65,6 +65,7 @@
      <Compile Include="Assets\Scripts\MousePoint.cs" />
      <Compile Include="Assets\Scripts\OptionsMenuScript.cs" />
      <Compile Include="Assets\Scripts\PauseMenuScript.cs" />
+     <Compile Include="Assets\Scripts\TimeAttack\TimeAttackControl.cs" />
      <Compile Include="Assets\Scripts\TimeAttackModeMenuScript.cs" />
      <Compile Include="Assets\Scripts\UpdateVolValueScript.cs" />
      <Compile Include="Assets\Zuyi Asset\My Scripts\DepotAI.cs" />

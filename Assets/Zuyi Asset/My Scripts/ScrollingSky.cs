@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ScrollingSky : MonoBehaviour {
 
-    float scrollSpeed = 0.05f;
+    float scrollSpeed = 0.01f;
     Vector2 scrollVector = new Vector2(1,0);
 
 	// Use this for initialization
@@ -13,6 +13,6 @@ public class ScrollingSky : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        renderer.material.SetTextureOffset("_MainTex", scrollVector * Time.time * scrollSpeed);
+        renderer.material.mainTextureOffset = new Vector2(Time.time * scrollSpeed,0);
 	}
 }

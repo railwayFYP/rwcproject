@@ -30,6 +30,8 @@ public class GridData : MonoBehaviour {
 	public bool isTrack;
 	public bool isBuilding;
     public bool isOccupied;
+    public bool isStar;
+
     public bool isNotRemoveable = false;
 
 	public Building buildingType;
